@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  
+ 
+	
+  <script src="js/mui.min.js"></script>
+	<script>
+	mui.init({
+	  			preloadPages:[{
+	  				url:'/map.html',
+	  				id:'map.html',
+	    			styles: {}, //窗口参数  
+	    			extras: {} //自定义扩展参数
+	  			},{
+	  				url:'/login.html',
+	  				id:'login.html'
+	  			},{
+	  				url:'music.html',
+	  				id:'music.html'
+	  			}]
+	  		}
+	  	);
+		
+  	mui.plusReady(function(){
+  		
+	  	   plus.navigator.setStatusBarBackground("#f95e15");
+	  	  
+    				setTimeout(function(){
+    						plus.navigator.setStatusBarBackground("#72B6FB");
+					var array = plus.webview.all();
+					if(array){
+						for(var i=0,len=array.length;i<len;i++){
+						    	console.log(array[i].getURL());
+				    	    			var array = plus.webview.all();
+				    	    			if(array.length>1){
+				    	    				
+    											plus.webview.hide("/index.html");
+					    	    			mui.openWindow({url:'/map.html',
+		  				                          id:'map.html'});
+		  				           /* mui.openWindow({url:'music.html',
+		  				                          id:'music.html'});*/
+				    	    			}
+				    	    				
+					        }
+						}
+				
+				},15000);
+				plus.key.addEventListener('backbutton',function(){
+					
+					plus.webview.currentWebview().close("auto");
+					
+				},false);
+				window.addEventListener("back",function(){
+					/*plus.webview.currentWebview().close("auto");*/
+					plus.runtime.quit();
+				},false);
+			}
+  	);
+		
+  	
+		
+		
+	</script>
+	<link href="css/loadingbar.css" rel="stylesheet" type="text/css" />
+	<style>
+		img{
+			position:relative;
+			left:50%;
+			margin-left:-59px;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="container">
+	  <img src="img/iov.png"/>
+    <div class="warning">
+    </div>
+</div>
+<div style="height:50px;"></div>
+		
+</body>
+
+</html>

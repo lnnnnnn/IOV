@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			 body{
+		  	margin:0;
+		  	padding:0px;
+		  }
+		  .head {
+				color: #A6A6AB;
+				height: 25px;
+				border-bottom: #ccc 1px solid;
+				margin-bottom: 10px;
+				padding-top: 10px;
+				text-align: center;
+				width: 100%;
+				position:fixed;
+				top:0;
+				background-color: white;
+				//position: static;
+				z-index: 10;
+			}
+			
+			.iback {
+				background: no-repeat center center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABYCAYAAAADWlKCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAABZ0RVh0Q3JlYXRpb24gVGltZQAwOS8xMi8xM5w+I3MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAACcklEQVR4nO3a0XESURiG4TeO99iBWoGZ+RvADtKBpAPtwBLsANJBrEAs4MyYDmIHSQXkgk0mMLK7ILt8/+F778ici394OGfDsher1Qqn05tTD+A2M4hYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYb089wNCVUq6Ay+blfUQsTjhOZxc1P9tbSlkAX7b+/C0ifpxgnF5Ve2TtwAD4OvIoe1UlSAsGwPsRR9m76kA6MAD+jjTKQVUF0gMD4HaEUQ6umot6T4ybiJgNP83hVbFDasGACnZIT4yfEXE1wjj/Xeod0hPjDpgNPsyRSguyB8Y0Ih6Gn+g4pQSpFQMSgtSMAclAaseARCDngAFJQM4FAxKAnBMGiH8xLKVMgV89ln6MiPthpxkn6R0SEUvgusfSZSnlsnuZftI75LlSygyYdyx7ZH1s/Rl+ouFKAQIvx9ctMGlZlh4lDQhAcywtqRhF+hqyXfMmT1m/6buasL6mzMaY6dilAoENlLuWZRNgnhEl1ZH1ulLKO9bH16eOpdfqz2K9Lt0Oea75EjilfadAsp2SFgQ2UH53LJ2XUr4PPtARSntkbVfL7+rVgEBvlM/NHQDJUh9Z2zWf/puOZbPhJzm8qkDgBaXt/teHcSY5rOpAAJp/c/vclJSrShDYifKI+NPvVV3U/1VzU3LavFyo/25SPUi2qj2ysmYQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsZ4Ak9fPFwUy/HsAAAAASUVORK5CYII=);
+				background-size: 50px 44px;
+			}
+			
+			.nvbt {
+				width: 15%;
+				height: 15px;
+				//float:left;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				position: absolute;
+				top: 12px;
+			}
+			.query{
+				//margin:10px;
+				text-align: center;
+				//height:20px;
+				width:60px;
+				padding:9px;
+				border-radius: 5px;
+				background: #0DD9F3;
+			}
+			.right{
+				//float:right;
+				position:absolute;
+				right:5px;
+				top:5px;
+			}
+			.selectCar{
+				position: relative;
+				margin-top:50px;
+			}
+			.buspicker{
+				//font:15px;
+				height:35px;
+				margin-left:10px;
+				width:130px;
+			}
+			ul{
+				padding:10px;
+			}
+			li{
+				padding: 5px;
+				list-style-type: none;
+				line-height: 20px;
+				border-bottom:1px solid #ccc;
+				/*position: relative;
+				//padding:5px;
+				//height:45px;
+				
+				
+				margin-bottom:5px;
+				margin-left: 5px;*/
+			}
+			.badge{
+				/*border-radius: 1px;*/
+			   background: #0DD9F3;
+			    width:10px;
+			    height:10px;
+			}
+			.inputcity{
+				width:20%;
+				height:40px;
+				border-radius: 50%;
+				text-align: center;
+			}
+			#querybtn{
+				height:40px;
+				//margin-right: 10px;
+				margin: auto;
+				width:20%;
+				border-radius: 50%;
+				background: transparent;
+			}
+			/*input*/
+		</style>
+	</head>
+	<body>
+		
+		 <div class='head'>违章信息
+			<div class='nvbt iback'></div>
+		</div>
+		<div class="selectCar">              
+			<select class='buspicker left'> 
+					<!--<option value="苏C26958">奥迪A4L 苏C26958</option>-->
+					<!--<option value="赣G26958">宝马3系  赣G26958</option>-->
+				</select>
+				<input class='inputcity' placeholder="输入城市" />
+				<!--/<input type="button" id="querybtn" class=""value="查询" />-->
+				<div class='query right'>查询</div>
+		</div>
+		<ul class="weiZhangInfo">
+			<!--<li calss='weiZhangItem'> 
+				<span class='badge'>1.</span>
+				<span class='info'>违章时间: 2014-07-08 15:35:00违章地点: 南码头路520号非机违章行为:在高速公路上，超过规定时速低于50% 计分:3 罚款:200</span>
+			
+			</li>
+			<li calss='weiZhangItem'> 
+				<span class='badge'>2.</span>
+				<span class='info'>违章时间: 2014-07-08 15:35:00违章地点: 南码头路520号非机违章行为:在高速公路上，超过规定时速低于50% 计分:3 罚款:200</span>
+			
+			</li>-->
+		</ul>
+		<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/init.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/md5.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/weiZhang.js" type="text/javascript" charset="utf-8"></script>
+		</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/xhr.js" type="text/javascript" charset="utf-8"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link href="css/common.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	/*function createBarcode(){
+      		var text=document.getElementById('input');
+      		if(/\S/g.test(text.value)){
+      			document.getElementById('barcode').src="http://qr.liantu.com/api.php?text="+text.value;
+      		}else{
+      			alert("请输入内容！")
+      		}
+      		/*var downloadBarcode = plus.downloader.createDownload(
+      			"http://qr.liantu.com/api.php?text="+text.value,
+      		    {},
+      		    function ( d, status ) {
+					// 下载完成
+					if ( status == 200 ) { 
+						alert( "Download success: " + d.filename );
+						document.getElementById('barcode').src="http://qr.liantu.com/api.php?text="+text.value
+					} else {
+						 alert( "Download failed: " + status ); 
+					}  
+			    });
+      	}*/
+    </script>
+    <style>
+    	#barCodeCase{
+    		position:absolute;
+    		top:20%;
+    		left:50%;
+    		width:300px;
+    		margin-left: -150px;
+    	}
+    	#barcode{
+    		position:relative;
+    		
+    	}
+    	p{
+    		text-align: center;
+    	}
+    </style>
+</head>
+<body>
+	<!--<input id="input" type="text" value=""/>
+    <div class="button" onclick="createBarcode()">生成二维码</div> -->
+    
+    <div class='head'>生成订单二维码
+			<div class='nvbt iback'></div>
+		</div>
+    <div id="barCodeCase">
+    	<p>二维码已生成</p>
+    	<img id="barcode"/>
+    </div>
+	
+	<script>
+	mui.init();
+	function xhr(jsonStr) {
+					
+					var data = "data=" + jsonStr;
+					var username=plus.storage.getItem("username");
+		      // username="zzj";
+      
+       
+					
+					var postUrl = plus.storage.getItem("serverUrl") + "OilOrderServlet"+"?username="+username+"&"+data;
+					var request = new plus.net.XMLHttpRequest();
+					//XMLHttpRequest();
+					console.log(postUrl);
+					request.open("POST", postUrl);
+					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					request.send();
+					request.onreadystatechange = function() {
+						if (request.readyState == 4) {
+							if (request.status == 200) {
+								console.log("order" + request.responseText);
+								
+							} else {
+								alert("order" + "发生错误" + request.status);
+							}
+						}
+					}
+				}
+	mui.plusReady(
+		function(){
+			var self = plus.webview.currentWebview();
+			console.log("self.json:"+self.json);
+			document.getElementById('barcode').src="http://qr.liantu.com/api.php?w=300&text="+self.json;
+			plus.storage.setItem("orderBarcodeSrc","http://qr.liantu.com/api.php?w=300&text="+self.json);
+			var json=JSON.parse(self.json);
+			json.barcodeSrc=plus.storage.getItem("orderBarcodeSrc");
+									
+									var jsonStr = JSON.stringify(json);
+									
+									console.log(JSON.stringify(json));
+									var res=encodeURIComponent(jsonStr);
+									console.log(res);
+									var resesc=escape(res);
+									console.log(resesc);
+									xhr(resesc);
+									//xhr(res);
+									
+									var eeres=encodeURI(encodeURI(jsonStr));
+								    console.log("eeres:"+eeres);	
+								//xhr(eeres);
+		}
+	)
+</script>
+
+<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

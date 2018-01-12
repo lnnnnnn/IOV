@@ -1,0 +1,31 @@
+.checkboxFive label:after ,.chk_2 label:after{
+   // opacity: 0.2;
+   opacity: 0;
+    content: '\2714';
+    //content:'\e013';
+    position: absolute;
+    color:green;
+    /*width: 15px;*/
+    /*height: 10px;*/
+    /*background: transparent;*/
+    top: 0px;
+    left: 0px;
+    //border: 3px solid black;
+    /*border-top: none;*/
+    /*border-right: none;*/
+
+    /*-webkit-transform: rotate(-45deg);*/
+    /*-moz-transform: rotate(-45deg);*/
+    /*-o-transform: rotate(-45deg);*/
+    /*-ms-transform: rotate(-45deg);*/
+    /*transform: rotate(-45deg);*/
+}
+.checkboxFive input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+.checkboxFive input[type=radio]:checked + label:after {
+    opacity: 1;
+}
+input[type="radio"] {
+    -webkit-appearance: none;
+}

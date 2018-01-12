@@ -1,0 +1,92 @@
+{
+  "route.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/bootstrap-gliphicon/css/bootstrap.min-icon.css",
+      "css/bootstrap-gliphicon/fonts/glyphicons-halflings-regular.ttf",
+      "css/bootstrap-gliphicon/fonts/glyphicons-halflings-regular.woff2"
+    ],
+    "refer": [
+      "searchResult.html"
+    ]
+  },
+  "map.html": {
+    "resources": [
+      "js/mui.min.js",
+      "img/ceshi.jpg",
+      "js/init.js",
+      "css/iconfont.css",
+      "css/mui.min.css",
+      "fonts/iconfont.ttf"
+    ],
+    "refer": [
+      "login.html",
+      "gasForm.html",
+      "gasOrder.html",
+      "route.html"
+    ]
+  },
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "img/iov.png",
+      "css/loadingbar.css"
+    ],
+    "refer": [
+      "map.html",
+      "music.html",
+      "login.html"
+    ]
+  },
+  "music.html": {
+    "resources": [
+      "css/mui.min.css",
+      "js/back.js",
+      "css/header.css",
+      "js/music.js",
+      "js/mui.js"
+    ],
+    "refer": []
+  },
+  "login.html": {
+    "resources": [
+      "js/back.js",
+      "css/iov.css",
+      "js/myxhr.js",
+      "css/header.css"
+    ],
+    "refer": [
+      "register.html"
+    ]
+  },
+  "register.html": {
+    "resources": [
+      "js/init.js"
+    ],
+    "refer": []
+  },
+  "gasForm.html": {
+    "resources": [
+      "js/back.js",
+      "js/mui.picker.min.js",
+      "css/mui.picker.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "gasOrder.html": {
+    "resources": [
+      "js/mui.picker.min.js",
+      "js/xhr.js",
+      "css/mui.picker.min.css"
+    ],
+    "refer": []
+  },
+  "searchResult.html": {
+    "resources": [
+      "js/bootstrap.min.js",
+      "js/jquery-2.1.4.min.js",
+      "css/bootstrap.min.css"
+    ]
+  }
+}

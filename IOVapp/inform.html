@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/iconfont-xiaoxi.css"/>
+		<!--<link rel="stylesheet" type="text/css" href="css/app.css" />-->
+		<style>
+		.mui-slider-handle{
+			display: table;
+		}
+			.icon-xiaoxi01{
+				font-size: 25px;
+				color: #ECA112;
+				//color: #0DD9F3;
+				//display:block;
+				//position:absolute;
+				//vertical-align: center;
+				display: table-cell;
+                vertical-align: middle;
+                //margin-right: 15px;
+                padding-right: 10px;
+			}
+			.date{
+				color: #33B9B9;
+				font-size: 15px;
+				//position:absolute;
+				//right:0;
+				float:right;
+				padding-right: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class='head'>维护信息
+			<div class='nvbt iback'></div>
+		</div>
+		
+		<div class="mui-content">
+			<!--<h5 class="mui-content-padded" style="margin: 55px 10px 15px 10px;"></h5>-->
+			
+			<ul id="OA_task_1" class="mui-table-view">
+				<!--<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<span class="mui-icon iconfont icon-xiaoxi01"></span>
+						左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮左滑显示删除按					    
+						<div class="date">2016-7-24</div>
+						
+					
+					</div>
+					
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<span class="mui-icon iconfont icon-xiaoxi01"></span>
+						左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮左滑显示删除按钮
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<span class="mui-icon iconfont icon-xiaoxi01"></span>
+						</div>
+				</li>-->
+				
+				
+				</ul>
+			</div>
+			
+			
+			
+			
+			<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+			<script src="js/mui.min.js"></script>
+		<script>
+			mui.init();
+			(function($) {
+				//$.swipeoutOpen(el,direction)//打开指定列的滑动菜单，el:指定列的dom对象，direction：取值left|right，指定打开的是左侧或右侧滑动菜单
+				//$.swipeoutClose(el);//关闭指定列的滑动菜单，el:指定列的dom对象
+				//				setTimeout(function() {
+				//					$.swipeoutOpen(document.getElementById("OA_task_1").querySelector('li:last-child'), 'left');
+				//					setTimeout(function() {
+				//						$.swipeoutClose(document.getElementById("OA_task_1").querySelector('li:last-child'));
+				//					}, 1000);
+				//				}, 1000);
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+				$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+					//alert("in");
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', "",btnArray, function(e) {
+						if (e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				var btnArray = ['确认', '取消'];
+				//第二个demo，向左拖拽后显示操作图标，释放后自动触发的业务逻辑
+				$('#OA_task_2').on('slideleft', '.mui-table-view-cell', function(event) {
+					var elem = this;
+					mui.confirm('确认删除该条记录？', 'Hello MUI', btnArray, function(e) {
+						if (e.index == 0) {
+							elem.parentNode.removeChild(elem);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(elem);
+							}, 0);
+						}
+					});
+				});
+				//第二个demo，向右拖拽后显示操作图标，释放后自动触发的业务逻辑
+				$('#OA_task_2').on('slideright', '.mui-table-view-cell', function(event) {
+					var elem = this;
+					mui.confirm('确认删除该条记录？', 'Hello MUI', btnArray, function(e) {
+						if (e.index == 0) {
+							elem.parentNode.removeChild(elem);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(elem);
+							}, 0);
+						}
+					});
+				});
+			})(mui);
+		</script>
+	<script type="text/javascript">
+	
+	
+	if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			
+			function plusReady () {
+				//plus.storage.setItem("unreadNotices","您的车辆奥迪A4L油量仅剩14%&异常&异常&车灯坏！");
+		var notices=plus.storage.getItem("unreadNotices").split("&");
+		console.log(notices);
+		var ul=document.querySelector('#OA_task_1');
+		var len=notices.length;
+		for(var i=0;i<notices.length-1;i++){
+			var li=document.createElement('li');
+			li.innerHTML='<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div><div class="mui-slider-handle"><span class="mui-icon iconfont icon-xiaoxi01"></span>'+
+					      notices[i]+'<div class="date">'+notices[len-1]+'</div>'
+					      '</div></li>';
+						
+			li.className="mui-table-view-cell";		
+					
+						
+			ul.appendChild(li);			
+				
+		}
+			}
+	
+	</script>
+	</body>
+	
+</html>

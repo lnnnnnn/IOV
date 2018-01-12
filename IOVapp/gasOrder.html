@@ -1,0 +1,579 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/xhr.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/init.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/header.css" />-->
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont_gasOrder.css" />
+		<style>
+			body {
+				background-color: #E4EBFB;
+				margin: 0;
+				padding-top: 15px;
+				//background-color: white;
+			}
+			
+			.head {
+				background-color: white;
+			}
+			/*input {
+				height: 30px;
+				font-size: 15px;
+				outline: none;
+				border: none;
+				//border:1px solid #C0C0C0;
+				position: absolute;
+				top: 3px;
+				left: 55px;
+				background: transparent;
+				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			}*/
+			
+			#panel {
+				//margin-top:50px;
+				//border: 1px solid #ccc;
+				position: relative;
+				border-radius: 10px;
+				padding: 0;
+				//width: 95%;
+				margin: auto;
+				//margin-top: 50px;
+			}
+			
+			#panel li {
+				font-size: 16px;
+				color: #8f8f94;
+				list-style-type: none;
+				position: relative;
+				//height: 45px;
+				padding: 8px auto;
+				line-height: 30px;
+				//border-bottom: 1px solid #ccc;
+				margin-bottom: 5px;
+				margin-left: 5px;
+				padding: 0 24px 0 12px;
+				//color: #555555;
+			}
+			
+			.right {
+				//float:right;
+				position: absolute;
+				right: 18px;
+				top: 10px;
+			}
+			
+			.reserve-date button {
+				//top:12px;
+			}
+			
+			select {
+				top: 17px;
+			}
+			
+			.submit {
+				color: #555555;
+				margin: 10px;
+				text-align: center;
+				padding: 15px;
+				border-radius: 5px;
+				background: #5BC0DE;
+			}
+			
+			.submit:active {
+				background: #0DD9F3;
+			}
+			
+			#pick-date {
+				//	color: #555;
+				//	border-radius:3px;
+			}
+			
+			#gastype {
+				position: absolute;
+				right: 18px;
+				top: 0;
+			}
+			
+			#amounttype {
+				position: absolute;
+				right: 18px;
+				top: 0;
+			}
+			
+			#gasamount {
+				//border: 1px solid #C4E3F3;
+				//border-radius: 5px;
+				height: 24px;
+				width: 80px;
+				margin: 0 0 0 20px;
+				padding: 2px 5px;
+			}
+			
+			#vehicle>.radio {
+				display: block;
+				font-size: 1.2em;
+				border-radius: 12px;
+				padding: 0 15px;
+				width: 85%;
+				margin: 0 0 8px 0;
+			}
+			
+			#vehicle>.radio>img {
+				margin-bottom: -9px;
+			}
+			
+			.radio {
+				margin: 0 2px;
+				color: #9D9D9D;
+				padding: 4px 8px;
+				border: 1px solid #ccc;
+				//border: 1px solid #B9DEF0;
+				//border-radius: 5px;
+				//background-color: #F2F2F2;
+			}
+			
+			.radio:active {
+				//color:#F3F3F3;
+				//border:1px solid #007AFF;
+				//background-color:#3BD0F7;
+			}
+			
+			.radioActive {
+				color: #F3F3F3;
+				//	border: 1px solid #007AFF;
+				//background-color: #3BD0F7;
+				border: none;
+				background-color: darkorange;
+			}
+			
+			.carRadio {
+				margin: 0 2px;
+				color: #9D9D9D;
+				padding: 4px 8px;
+				border: 1px solid #B9DEF0;
+				border-radius: 5px;
+			}
+			
+			.carRadioActive {}
+			
+			.icon-xiugai {
+				color: red;
+			}
+			/*.mui-table-view .mui-media-object {
+    line-height: 42px;
+    max-width: 42px;
+    height: 42px;
+}
+
+.mui-table-view-radio .mui-table-view-cell .mui-navigate-right:after {
+    font-size: 30px;
+    font-weight: 600;
+    right: 9px;
+    content: '';
+    color: #2D4E71;
+}*/
+			
+			#cnter {
+				margin-top: 10px;
+				//border:1px solid #ccc;
+				width: 90%;
+				// background-color: #F8FAFF;
+				background-color: white;
+				margin: auto;
+				position: relative;
+				font-family: 'Microsoft Yahei';
+				// z-index: 2;
+				margin-bottom: 30px;
+			}
+			
+			#cnter::before,
+			#cnter::after {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				bottom: 20px;
+				top: 3px;
+				left: 30px;
+				width: 10px;
+				height: 50%;
+				box-shadow: -20px 4px 20px #222;
+				transform: rotate(-6deg);
+				-webkit-transform: rotate(-6deg);
+			}
+			
+			#cnter::after {
+				box-shadow: 20px 4px 20px #222;
+				right: 30px;
+				left: auto;
+				transform: rotate(6deg);
+				-webkit-transform: rotate(6deg);
+			}
+			
+			.mui-table-view {
+				//margin-top: 20px; 
+			}
+			
+			.mui-table-view:before {
+				height: 0px;
+			}
+			
+			.icon-fanhui {
+				display: block;
+				position: absolute;
+				top: 5px;
+				right: 10px;
+				font-size: 23px;
+				color: #928F8F;
+				z-index: 10;
+			}
+		</style>
+	</head>
+
+	<body style="">
+
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function() {
+				//plus.navigator.setStatusBarBackground("#E4EBFB");
+              var username = plus.storage.getItem("username");
+               document.querySelector('.username').innerHTML=username;
+         
+				var self = plus.webview.currentWebview();
+				var gas = self.gasStation;
+				console.log(gas);
+				console.log(gas.name);
+
+				var gasStation = document.querySelector('.gasstation');
+				gasStation.innerText = gas.name;
+				var gastype = document.getElementById('gastype');
+				var gasTypesArr = [];
+				var i = 0;
+				for(var key in gas.gastprice) {
+					gasTypesArr[i] = key;
+					console.log(gasTypesArr[i]);
+					i++;
+				}
+				setOption(gastype, gasTypesArr);
+				var amounttype = document.getElementById('amounttype');
+				var amountTypeText = ['元', '升'];
+				setOption(amounttype, amountTypeText);
+
+				var btn = document.querySelector('#pick-date');
+				//var btn = document.querySelector('.icon-xiugai');
+
+				btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var picker = new mui.DtPicker(options);
+					picker.show(function(rs) {
+						document.querySelector('.reserve-date-span').innerText = rs.text;
+						//picker.dispose();
+						return picker.dispose();
+					});
+				}, false);
+
+				
+
+				function showCars(cars) {
+
+					for(var i = 0; i < cars.length; i++) {
+						var li = document.createElement('li');
+						li.className = "mui-table-view-cell mui-media";
+						//li.innerHTML
+						li.innerHTML = '<a class="mui-navigate-right">' +
+							'<img class="mui-media-object mui-pull-left" src="' + cars[i].symbol + '">' +
+
+							'<div class="mui-media-body">' + cars[i].brand + cars[i].type +
+							"<p class='mui-ellipsis'>" + cars[i].hphm + '</p>' +
+							'</div>' +
+							'</a>'
+						var ul=document.querySelector('.mui-table-view.mui-table-view-radio');
+						ul.appendChild(li);
+
+					}
+
+				}
+            
+            
+            var self=plus.webview.currentWebview();
+           // alert(self.cars);
+            //showCars(self.cars);
+				function getCarsSuc(resText) {
+					var cars = resText.data;
+					showCars(cars);
+				}
+				 username = plus.storage.getItem("username");
+				console.log("gasOrder-300:" + username);
+				var postUrl = plus.storage.getItem("serverUrl") + "GetCarsServlet" + "?username=" + username;
+				console.log(username);
+				//alert("ready");
+				xhr(postUrl, true, getCarsSuc, function() {
+					plus.nativeUI.toast('服务器无法联系，请检查网络链接是否正常！');
+				});
+				//showSelect(carArr);
+				/*(function queryCars() {
+					//alert("querycars");
+					var serverUrl = "http://192.168.1.108:8080/IOVServer/";
+					//var username = plus.storage.getItem("username");
+					username="zzj";
+					console.log(username);
+					//var serverUrl = plus.storage.getItem("serverUrl");
+					var postUrl = serverUrl + "carDbServlet" + "?username=" + username;
+					console.log(postUrl);
+					var request = new plus.net.XMLHttpRequest();
+					//XMLHttpRequest();
+					request.open("POST", postUrl);
+					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					request.send();
+					var wd = plus.nativeUI.showWaiting("正在获取您的车辆...");
+					// plus.nativeUI.toast("");
+					request.onreadystatechange = function() {
+						//alert(request.readyState);
+						if (request.readyState == 4) {
+							wd.close();
+							if (request.status == 200) {
+								console.log("querycars" + request.responseText);
+								var res = JSON.parse(request.responseText);
+								var cars = res.data;
+								var len = cars.length;
+								for (var i in cars) {
+									carArr.push(cars[i]);
+								}
+								showSelect(carArr);
+							} else {
+								alert("querycars" + "发生错误" + request.status);
+							}
+						}
+					}
+				})();*/
+				function showSelect(cars) {
+					//alert("showselected");
+					var sel = document.getElementById('vehicle');
+					var carOptionsArr = [];
+					for(var i in cars) {
+						console.log(JSON.stringify(cars[i]));
+						console.log(cars[i].hphm);
+						
+						carOptionsArr[i] = "<img src='" + cars[i].symbol + "' style='height:30px;width:auto;' />" + cars[i].brand + " " + cars[i].hphm;
+						console.log(carOptionsArr[i]);
+					}
+					//				setOption(sel,carOptionsArr);
+				}
+
+				
+
+			function createNode(nodename) {
+				var node = document.createElement(nodename);
+				return node;
+			}
+
+			function setOption(container, optionText) {
+				var opstionArr = [];
+				for(var i in optionText) {
+					var options = createNode('span');
+					options.innerHTML = optionText[i];
+					options.className = 'radio';
+					container.appendChild(options);
+					opstionArr.push(options);
+				}
+				setRadioListener(container, opstionArr);
+			}
+
+			function setRadioListener(container, radio) {
+				var children = container.childNodes;
+				for(var j in radio) {
+					(function(j) {
+						radio[j].addEventListener('tap', function() {
+							for(var i in children) {
+								//							console.log(children[i].className);
+								if(children[i].className == 'radio radioActive') {
+									children[i].className = 'radio';
+								}
+							}
+							radio[j].className = 'radio radioActive';
+						});
+					})(j);
+				}
+			}
+			
+			
+			
+			var carInfo; 
+		document.querySelector('.mui-table-view.mui-table-view-radio').addEventListener('selected',function(e){
+			console.log(e.detail.el.innerText);
+			var tmp=e.detail.el.innerText;
+			carInfo=tmp.replace(/\n/,'').replace(/\n/," ").replace(/\n/,"")
+			console.log(carInfo);
+		});
+		
+		function orderSuc (resText) {
+			console.log("预约加油:"+resText);
+			mui.openWindow({url:'orderList_main.html',id:'orderList_main.html'});
+			plus.webview.currentWebview().close();
+			plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+		}
+		document.querySelector('.submit').addEventListener('tap',
+					function() {
+						var gasOrder;
+						var gasstation = document.querySelector('.gasstation').innerHTML;
+						var username = document.querySelector('.username').innerHTML;
+						var theDate = document.getElementById('date').innerText;
+						var carSelect = document.getElementsByClassName('radioActive')[2];
+						/*if(carSelect == undefined) {
+							alert("请完整填写订单");
+							return;
+						};*/
+						var car = carSelect;
+						var gasType2 = (document.getElementsByClassName('radioActive')[0]).innerText;
+
+						var amountSelect = document.getElementsByClassName('radioActive')[1];
+						var amountValue = document.getElementById('gasamount').value;
+						console.log(amountValue)
+						if(amountValue == '' || amountValue < 0.01) {
+							alert("请输入加油量")
+							return;
+						}
+						var amount = amountValue + amountSelect.innerText;
+//						gasOrder = car.innerText + theDate + gasstation.innerHTML + gasType.innerText + ',' + amount;
+						var oj = {},
+							myd = new Date();
+						oj.finished=false;	
+						oj.name = username;
+						console.log(oj.name);
+						oj.carDesc = carInfo;
+						oj.date = (theDate == "今天") ? myd.getFullYear() + "-" + (myd.getMonth() + 1) + "-" + myd.getDate() : theDate;
+						console.log(oj.date + gasOrder);
+						oj.gasStation = gasstation;
+						oj.type = gasType2;
+						oj.volume = amount;
+						
+						//money
+						if(/元/.test(amount)) {
+							oj.money = amountValue;
+						} else if(/升/.test(amount)) {
+							console.log(gasType2);
+							for(var key in gas.gastprice) {
+								console.log("key:"+key+" "+gas.gastprice[key]);
+								if(gasType2 == key) {
+									console.log("升："+amount+" "+gas.gastprice[key]);
+									oj.money = (amountValue * gas.gastprice[key]).toString();
+								};
+							}
+						}
+						console.log("money:"+oj.money);
+						console.log(typeof oj.money);
+                      	plus.storage.setItem("orderBarcodeSrc","http://qr.liantu.com/api.php?w=300&text="+JSON.stringify(oj));
+                      oj.barcodeSrc=plus.storage.getItem("orderBarcodeSrc");
+                      
+                      //请求
+                      var jsonStr = JSON.stringify(oj);
+									
+									console.log(JSON.stringify(oj));
+									var res=encodeURIComponent(jsonStr);
+								//	console.log(res);
+									var resesc=escape(res);
+									//console.log(resesc);
+									//xhr(resesc);
+                      var postUrl = plus.storage.getItem("serverUrl") + "OilOrderServlet"+"?username="+username+"&data="+resesc;
+                  
+                      xhr(postUrl,false,orderSuc,function  () {
+                      	plus.nativeUI.toast('服务器无法联系，请检查网络链接是否正常！');
+                      });
+                      
+                      
+                     
+					}, false);
+			})
+		</script>
+		<!--<div class='head'>预约加油
+			<div class='nvbt iback'></div>
+		</div>-->
+		<div id='cnter'>
+			<ul id='panel'>
+				<span id="back" class='mui-icon iconfont icon-fanhui iback'></span>
+				<!--<li style='display:block;'></li>-->
+				<li class='username'><span>姓名</span>
+
+					<!--<input type="text" name="" id="username" value="" />--></li>
+
+				<li class='reserve-date'>
+					<span id="date" class='reserve-date-span'>今天</span>
+
+					<span id='pick-date' class='mui-icon iconfont icon-xiugai' data-options='{"type":"date","beginYear":2016,"endYear":2017}' class="right"></span>
+				</li>
+				<li class='gasstation'></li>
+				<li class='gastype'>类型
+					<div id='gastype'>
+
+					</div>
+
+				</li>
+				<li>加油量</li>
+
+				<li class='gasamount'><input type="text" name="" id="gasamount" value="" placeholder="" />
+					<div id='amounttype'>
+
+					</div>
+				</li>
+				<!--<li class='bus'>汽车:
+				<div id='vehicle'>
+					
+				</div>
+			</li>-->
+
+			</ul>
+
+			<ul class="mui-table-view mui-table-view-radio">
+				<!--<li class="mui-table-view-cell mui-media">
+
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="img/flag/flag_baoma.png">
+
+						<div class="mui-media-body">
+							宝马3系
+							<p class='mui-ellipsis'>苏C26958</p>
+						</div>
+					</a>
+
+				</li>
+				<li class="mui-table-view-cell mui-media ">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="img/flag/flag_baoma.png">
+
+						<div class="mui-media-body">
+							宝马3系
+							<p class='mui-ellipsis'>苏C26958</p>
+						</div>
+					</a>
+				</li>-->
+
+			</ul>
+		</div>
+		<div class='submit'>提交订单</div>
+		<script src="js/back_close.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script>
+		var back=document.querySelector('.icon-fanhui');
+		//alert(back);
+		document.querySelector('#back').addEventListener('tap',function() {
+		//	alert("back");
+	        plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+		},false);
+		</script>-->
+		<script type="text/javascript">
+			mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+		
+			
+		</script>
+	</body>
+
+</html>

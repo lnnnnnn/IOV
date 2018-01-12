@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link href="css/common.css" rel="stylesheet"/>
+    <link href="css/header.css" rel="stylesheet"/>   
+    <script src="js/xhr.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="UTF-8">
+      var maintainInfo=[],info=[];
+        function Car (info) {
+        	
+            this.brand=info[0];
+            this.symbol=info[1];
+           this.type=info[2];
+             this.hphm=info[3];
+           this.classno=info[4];
+           this.engineno=info[6];
+            this.level=info[5];
+            this.mileage=info[7];
+             this.gas_percent=info[8];
+            this.engineP=info[9];
+            this.transmissionP=info[10]
+            this.lightS=info[11];
+        }
+        /*function xhr(jsonStr) {
+					
+					var data = "data=" + jsonStr;
+					
+					var postUrl = plus.storage.getItem("serverUrl") + "MaintainServlet"+"?"+data;
+					var request = new plus.net.XMLHttpRequest();
+					//XMLHttpRequest();
+					request.open("POST", postUrl);
+					console.log(postUrl);
+					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					request.send();
+					request.onreadystatechange = function() {
+						if (request.readyState == 4) {
+							if (request.status == 200) {
+								console.log("maintain" + request.responseText);
+								maintainInfo=request.responseText.split("&");
+								//console.log(maintainInfo);
+								console.log(request.responseText);
+								
+								plus.storage.setItem("unreadNotices",request.responseText);
+							} else {
+								alert("querycars" + "发生错误" + request.status);
+							}
+						}
+					}
+				}*/
+      	mui.init();
+      	mui.plusReady(function(){
+      		
+      		var self = plus.webview.currentWebview();
+      		/*var opener=self.opener();
+      		opener.close();*/
+      		console.log(self.info);
+      		 info=self.info.split(',');
+      		var labels=document.getElementsByClassName('label');
+      		for(var i in labels){
+      			labels[i].innerText=info[i];
+      		}
+      		
+      		
+      		var car=new Car(info);
+      		var jstr=JSON.stringify(car);
+      		//alert(jstr);
+      		
+   		//xhr(jstr);
+      		/*var self = plus.webview.currentWebview();
+      		var mapw=self.opener().opener().opener();
+      		mapw.evalJS("setBadgeNum(2)");*/
+      		//alert("in vehicle");
+      		//alert(mapw);
+      		
+      		
+      		var data = "data=" + jstr;
+					var username=plus.storage.getItem("username")
+					var postUrl = plus.storage.getItem("serverUrl") + "MaintainServlet"+"?username="+username+"&"+data;
+					xhr(postUrl,false,sucCallBack,
+					function  () {
+						alert("querycars" + "发生错误" + request.status);
+					}
+					);
+					
+					var bs=plus.webview.getWebviewById("barcode_scan.html");
+         	bs.close();
+      		
+      	});
+      	function backBtn(){
+      		plus.webview.currentWebview().close("auto");
+      	}
+      
+      	function sucCallBack (resText) {
+      		console.log(resText);
+      		plus.storage.setItem("unreadNotices",resText);
+      		var maintainInfo=resText.split("&");
+      		console.log(maintainInfo.length);
+      		var self = plus.webview.currentWebview();
+      		//var mapw=self.opener().opener().opener();
+      		var mapw=plus.webview.getWebviewById("map.html");
+      		mapw.evalJS("setBadgeNum("+(maintainInfo.length-1)+')');
+      		
+      		var maintainw=plus.webview.getWebviewById("maintain.html");
+//    		maintainw.hide();
+      	maintainw.evalJS("plusReady()");
+      		
+      			maintainw.evalJS("requestAgain()");
+      		
+      		//self.close();
+      			
+      	}
+      	//var mapw=plus.webview.getWebviewById("map.html");
+      	/*var mapw=window.opener;*/
+       // alert(mapw);
+      	//mapw.setBadgeNum(2);
+      
+      	
+    </script>
+    <style>
+    	p{
+    		display:inline-block;
+    	}
+    	li{
+    		list-style-type: none;
+    	}
+    </style>
+</head>
+<body>
+	<!-- header-start -->
+	<!--<header>
+		<span onclick="backBtn()"></span>
+	</header>-->
+	
+	<div class='head'>扫码信息
+			<div class='nvbt iback'></div>
+		</div>
+	<div id="asPadding"></div>
+	<!-- header-end -->
+	<div>
+		<ul>
+			<li>
+				<p>品牌：</p><label class='label'></label>
+			</li>
+			<li style='display:none;'>
+				<p>标志：</p><label class='label'></label>
+			</li>
+			<li>
+				<p>汽车型号:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>车牌号:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>车架号：</p><label class='label'></label>
+			</li>
+			<li>
+				<p>车身级别（几门几座）:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>发动机号:</p><label class='label'></label>
+			</li>
+			
+			<li>
+				<p>里程数（km）:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>汽油量（%）:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>发动机性能（好/异常）:</p><label class='label'></label>
+			</li>
+			<li>
+				<p>变速器性能(好/异常):</p><label class='label'></label>
+			</li>
+			<li>
+				<p>车灯（好/坏）:</p><label class='label'></label>
+			</li>
+		</ul>
+	</div>
+	<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		/*document.querySelector('.iback').addEventListener('tap',function () {
+			plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+		},false);*/
+		
+		
+      /* document.querySelector('.iback').addEventListener(function () {
+			//plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+			var maintainw=plus.webview.getWebviewById("maintain.html");
+      		maintainw.hide();
+		},false);*/
+	
+document.querySelector('.iback').onclick = function() {
+//alert("back");
+//plus.navigator.setStatusBarBackground("#72B6FB");
+	plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+}
+	</script>
+</body>
+</html>

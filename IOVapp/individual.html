@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/init.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<!--<script src="js/JsonForTest.js"></script>-->
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/header.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			/*mui.init({
+				preloadPages: [{
+					url: '/weiZhang.html',
+					id: 'weiZhang.html',
+					styles: {}, //窗口参数  
+					extras: {} //自定义扩展参数
+				}]
+			});*/
+
+			function askOrders() {
+				var username = plus.storage.getItem("username");
+				//username="zzx";
+				var postUrl = plus.storage.getItem("serverUrl") + "GetAllOrdersServlet" + "?username=" + username;
+				console.log(postUrl);
+				//var request = new plus.net.XMLHttpRequest();
+
+				var request = new XMLHttpRequest();
+				//XMLHttpRequest();
+				request.open("POST", postUrl);
+				request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				request.send();
+				var wd = plus.nativeUI.showWaiting("");
+				request.onreadystatechange = function() {
+					//alert(request.readyState);
+					if(request.readyState == 4) {
+						wd.close();
+						if(request.status == 200) {
+							//alert("order" + request.responseText);
+							console.log(request.responseText);
+
+							//base
+							var jsons = (JSON.parse(request.responseText)).data;
+							Json = jsons;
+							showOrders();
+						} else {
+							alert("queryOrders" + "发生错误" + request.status);
+						}
+					}
+				}
+			}
+			mui.plusReady(
+				function() {
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+
+					var username = plus.storage.getItem("username");
+					document.querySelector('.head p').innerHTML = username;
+					var avatar = document.getElementById('order');
+					avatar.addEventListener('tap', function() {
+						plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+						mui.openWindow({
+							url: 'orderList_main.html',
+							id: 'orderList_main.html'
+						});
+						//askOrders();
+						//mui.openWindow({url:'personalInfo.html',id:'personalInfo.html'});
+					}, false);
+
+					var gasOrder = document.getElementById('weiZhang');
+					gasOrder.addEventListener('tap', function() {
+						plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+						mui.openWindow({
+							url: 'weiZhang.html',
+							id: 'weiZhang.html'
+						})
+					}, false);
+
+					/*var updataVehicle = document.getElementById('updataVehicle');
+					updataVehicle.addEventListener('tap', function() {
+						mui.openWindow({
+							url: 'barcode_scan.html',
+							id: 'barcode_scan.html'
+						});
+					}, false);*/
+					var updataVehicle = document.getElementById('addCar');
+					updataVehicle.addEventListener('tap', function() {
+						//alert("in");
+						plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+						mui.openWindow({
+							url: 'vehicle_register.html',
+							id: 'vehicle_register.html'
+						});
+					}, false);
+					//getOrders();
+					//    			var username=plus.storage.getItem("username");
+					//		         //username="zzx";
+					//    			var postUrl = plus.storage.getItem("serverUrl") + "GetAllOrdersServlet"+"?username="+username;
+					//					console.log(postUrl);
+					//					//var request = new plus.net.XMLHttpRequest();
+					//					
+					//					var request=new XMLHttpRequest();
+					//					//XMLHttpRequest();
+					//					request.open("POST", postUrl);
+					//					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					//					request.send();
+					//					request.onreadystatechange = function() {
+					//						//alert(request.readyState);
+					//						if (request.readyState == 4) {
+					//							if (request.status == 200) {
+					//								//alert("order" + request.responseText);
+					//								console.log(request.responseText);
+					//								
+					//								
+					//								//base
+					//								var jsons=(JSON.parse(request.responseText)).data;
+					//								Json=jsons;
+					//								showOrders();
+					//							} else {
+					//								alert("queryOrders" + "发生错误" + request.status);
+					//							}
+					//						}
+					//					}
+
+				}
+			)
+		</script>
+		<style>
+			#avatar {
+				position: relative;
+				left: 50%;
+				margin-left: -9vh;
+				width: 18vh;
+				height: 18vh;
+				border: solid 1px;
+				border-radius: 9vh;
+			}
+			
+			#updataVehicle {
+				color: red;
+			}
+			
+			.order {
+				display: block;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class='head'>
+			<p>个人</p>
+
+			<div class='nvbt iback'></div>
+		</div>
+		<img id="avatar" src="img/user.png" />
+
+		<div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell " id="order">
+					<a class="mui-navigate-right" href="#">订单</a>
+					<div class="mui-collapse-content" id='orderContent'>
+						<!--<p id='gasOrder'>预约加油</p>-->
+						<!--<p>订单：</p>-->
+
+					</div>
+				</li>
+				<!--<li class="mui-table-view-cell " id='gasOrder'>
+	            <a class="mui-navigate-right" href="#">维护</a>
+	                <div class="mui-collapse-content">
+	                
+	            </div>
+	        </li>-->
+				<!-- <li class="mui-table-view-cell " id="updataVehicle">
+	            <a class="mui-navigate-right" href="#">维护</a>
+	            <div class="mui-collapse-content">
+	                <p></p>
+	            </div>
+	        </li> -->
+
+				<li class="mui-table-view-cell" id="weiZhang">
+					<a class="mui-navigate-right" href="#" style='color:red'>违章</a>
+
+				</li>
+				<li class="mui-table-view-cell" id="addCar">
+					<a class="mui-navigate-right" href="#">添加汽车</a>
+
+				</li>
+			</ul>
+		</div>
+
+		<!--
+    <div id="barcode1" class="mui-popover">
+    	<img  />
+    </div>
+    <div id="barcode2" class="mui-popover">
+    	<img  />
+    </div>
+    <div id="barcode3" class="mui-popover">
+    	<img  />
+    </div>
+    <div id="barcode4" class="mui-popover">
+    	<img  />
+    </div>-->
+
+		<script>
+			//alert(Json);
+
+			function transBarcodeSrc(src) {
+				var str = src.replace(/”/g, "\"");
+
+				return str;
+			}
+
+			function showOrders() {
+				var orderContent = document.getElementById('orderContent');
+				orderContent.innerHTML = "";
+				var Lenth = Json.length;
+				var orders = [];
+
+				var orderInfos = [];
+				var ul = [];
+				var li1 = [];
+				var li2 = [];
+				var p = [];
+				var pay = [];
+				var barcodes = [];
+				var img = [];
+				for(var i = 0; i < Lenth; i++) {
+					orders[i] = document.createElement('a');
+					orders[i].className = 'order';
+					orders[i].href = '#popover' + i;
+					/*console.log(orders[i].getAttribute('href',2))*/
+					orderContent.appendChild(orders[i]);
+
+					orderInfos[i] = document.createElement('div');
+					orderInfos[i].id = 'popover' + i;
+					orderInfos[i].className = 'mui-popover';
+					document.body.appendChild(orderInfos[i]);
+
+					ul[i] = document.createElement('ul');
+					ul[i].className = "mui-table-view";
+					orderInfos[i].appendChild(ul[i]);
+
+					li1[i] = document.createElement('li');
+					li1[i].className = "mui-table-view-cell";
+					p[i] = document.createElement('p');
+					p[i].innerText = Json[i].name + '\n' + Json[i].carDesc + '\n' + Json[i].date + '\n' + Json[i].gasStation + '\n' + Json[i].type + '\n' + Json[i].volume;
+					li1[i].appendChild(p[i]);
+					ul[i].appendChild(li1[i]);
+
+					li2[i] = document.createElement('li');
+					li2[i].className = "mui-table-view-cell";
+					pay[i] = document.createElement('a')
+					pay[i].innerText = '使用';
+					pay[i].href = "#barcode" + i
+					li2[i].appendChild(pay[i]);
+					ul[i].appendChild(li2[i]);
+
+					barcodes[i] = document.createElement('div');
+					barcodes[i].id = "barcode" + i;
+					barcodes[i].className = "mui-popover";
+					document.body.appendChild(barcodes[i]);
+					var src = transBarcodeSrc(Json[i].barcodeSrc);
+					console.log(src);
+					img[i] = document.createElement('img');
+					img[i].src = src;
+					img[i].style.width = '100vw';
+					barcodes[i].appendChild(img[i]);
+				}
+
+				for(var i in Json) {
+					orders[i].innerText = Json[i].gasStation;
+
+				};
+			}
+		</script>
+		<script src="js/back_close.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

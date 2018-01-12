@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="MobileOptimized" content="320" />
+
+		<title></title>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=znOsxpp2YxHg3M4V7vGDScRtoUfVuy2M"></script>
+		<link href="css/bootstrap-gliphicon/css/bootstrap.min-icon.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			mui.init({
+						  preloadPages:[{
+						    id:'searchResult',
+						    url:'searchResult.html'           
+						  }
+						  ]
+						});
+		</script>
+		<style>
+			body {
+				margin: 0;
+			}
+			
+			.iback {
+				background: no-repeat center center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABYCAYAAAADWlKCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAABZ0RVh0Q3JlYXRpb24gVGltZQAwOS8xMi8xM5w+I3MAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAACcklEQVR4nO3a0XESURiG4TeO99iBWoGZ+RvADtKBpAPtwBLsANJBrEAs4MyYDmIHSQXkgk0mMLK7ILt8/+F778ici394OGfDsher1Qqn05tTD+A2M4hYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYb089wNCVUq6Ay+blfUQsTjhOZxc1P9tbSlkAX7b+/C0ifpxgnF5Ve2TtwAD4OvIoe1UlSAsGwPsRR9m76kA6MAD+jjTKQVUF0gMD4HaEUQ6umot6T4ybiJgNP83hVbFDasGACnZIT4yfEXE1wjj/Xeod0hPjDpgNPsyRSguyB8Y0Ih6Gn+g4pQSpFQMSgtSMAclAaseARCDngAFJQM4FAxKAnBMGiH8xLKVMgV89ln6MiPthpxkn6R0SEUvgusfSZSnlsnuZftI75LlSygyYdyx7ZH1s/Rl+ouFKAQIvx9ctMGlZlh4lDQhAcywtqRhF+hqyXfMmT1m/6buasL6mzMaY6dilAoENlLuWZRNgnhEl1ZH1ulLKO9bH16eOpdfqz2K9Lt0Oea75EjilfadAsp2SFgQ2UH53LJ2XUr4PPtARSntkbVfL7+rVgEBvlM/NHQDJUh9Z2zWf/puOZbPhJzm8qkDgBaXt/teHcSY5rOpAAJp/c/vclJSrShDYifKI+NPvVV3U/1VzU3LavFyo/25SPUi2qj2ysmYQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsQwilkHEMohYBhHLIGIZRCyDiGUQsZ4Ak9fPFwUy/HsAAAAASUVORK5CYII=);
+				background-size: 50px 44px;
+			}
+			
+			.nvbt {
+				width: 15%;
+				height: 15px;
+				//float:left;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				position: absolute;
+				top: 13px;
+			}
+			
+			.head {
+				color: #A6A6AB;
+				height: 30px;
+				border-bottom: #ccc 1px solid;
+				margin-bottom: 10px;
+				margin-top: 10px;
+				text-align: center;
+				width: 100%;
+			}
+			
+			#inputs {
+				position: relative;
+				width: 100%;
+				height: 160px;
+				background: -webkit-linear-gradient(#1C95B3, #0DC6DE);
+				font-size: 15px;
+			}
+			
+			.start,
+			.end {
+				//position:relative;
+				position: absolute;
+				width: 70%;
+			}
+			
+			.start {
+				top: 30px;
+				left: 20px;
+			}
+			
+			.end {
+				top: 80px;
+				left: 20px;
+			}
+			
+			.transfer,
+			.search {
+				position: absolute;
+				top: 110px;
+				right: 20px;
+			}
+			
+			.transfer {
+				right: 50px;
+			}
+			.input{
+		/*input {*/
+		  color:#ccc ;
+				width: 100%;
+				height: 22px;
+				outline: none;
+				border: none;
+				//border:1px solid #C0C0C0;
+				position: absolute;
+				top: 0;
+				left: 50px;
+				background: transparent;
+				//border-bottom: 1px solid #ccc;
+				//border-radius: 5px;
+				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			}
+			
+			.start div,
+			.end div {}
+			
+			#record {
+				font-size: 15px;
+				list-style-type: none;
+				margin-top: 10px;
+				border-top: 1px solid #ccc;
+				padding-left: 0;
+			}
+			
+			#record li,
+			.record-clear {
+				border-bottom: 1px solid #ccc;
+			}
+			
+			.record-item span {
+				margin: 10px 5px;
+			}
+			
+			.record-clear {
+				text-align: center;
+				padding-bottom: 5px;
+			}
+			/*
+			 * mask
+			 */
+			
+			#bg {
+				display: none;
+				position: absolute;
+				top: 0%;
+				left: 0%;
+				width: 100%;
+				height: 100%;
+				background-color: black;
+				z-index: 1001;
+				-moz-opacity: 0.7;
+				opacity: .70;
+				filter: alpha(opacity=70);
+			}
+			
+			#show {
+				display: none;
+				position: absolute;
+				top: 10%;
+				left: 10%;
+				right:10%;
+				//width: 70%;
+				height: 70%;
+				padding: 8px;
+				border: 3px solid #E8E9F7;
+				background-color: white;
+				border-radius: 5px;
+				z-index: 1002;
+				/*overflow: auto;*/
+			}
+			#tangram-suggestion--TANGRAM__3-main{
+	z-index:1002;
+}
+
+li:active{
+	background-color:#F1EDED;
+}
+		</style>
+	</head>
+
+	<body>
+		<!--<div class='searchPanel'>
+			<input class='autoComplete'/>
+		</div>-->
+		<!--<input type="text" name="" id="autoComplete" value="" />-->
+		<div id="bg"></div>
+		<div id="show">
+            <input type="text" name="" id="autoComplete" style='position:absolute;right:10px;left:10px' value="" />
+			<input id="btnclose" style='position:absolute;right:0;bottom:0'type="button" value="完成"  />
+		</div>
+
+		<div class='head'>搜索路线
+			<div class='nvbt iback'></div>
+		</div>
+
+		<div id='inputs'>
+
+			<div class='start'>
+				<!--<div>起点:</div><input id='start' type='text' placeholder="我的位置" /> </div>-->
+               <div>起点:</div><span style=''id='start'class='input' type='text' placeholder="我的位置" >我的位置</span> </div>
+			<div class='end'>
+				<div>终点:</div><span id='end' type='text' class='input' placeholder="" ></span> </div>
+			<div class='transfer'><span class="glyphicon glyphicon-transfer"></span></div>
+			<div class='search'><span class="glyphicon glyphicon-search"></span></div>
+		</div>
+
+		<div id="">
+			<ul id="record">
+				<!--<li class='record-item'>
+					<span class='glyphicon glyphicon-search'></span>
+					<span class='record-item-start'>我的位置</span>
+					<span class='glyphicon glyphicon-circle-arrow-right'></span>
+					<span class='record-item-end'>南信大</span>
+				</li>-->
+
+			</ul>
+			<div class='record-clear'>清空搜索记录</div>
+		</div>
+		<!--<button onclick="clearRecord()" >清空搜索记录</button>-->
+		<div id='panel'></div>
+		<div id='map' style='display:none;'></div>
+	</body>
+	<script>
+	/*
+	 * 配置记录条数
+	 */
+	
+	function setRecordNum() {
+
+	plus.io.resolveLocalFileSystemURL(
+		"_www/config.json",
+		function(entry) {
+			var reader = null;
+			entry.file(function(file) {
+				reader = new plus.io.FileReader();
+				reader.readAsText(file);
+				reader.onloadend = function(evt) {
+					var j = JSON.parse(evt.target.result);
+					//	alert("filesys"+j.serverUrl);
+					plus.storage.setItem("serverUrl", j.serverUrl);
+					if (window.localStorage) {
+						localStorage.record_route_num = j.record_route_num;
+					}
+
+					//plus.android.runtimeMainActivity().setRemoteServerUrl( j.serverUrl );
+
+				}
+			});
+		},
+		function(e) {
+			console.log("Resolve file URL failed: " + e.message);
+		}
+	);
+}
+	/*
+	 * 显示搜索记录
+	 */
+	    function showRecords () {
+	    	var num = parseInt(localStorage.record_route_num);
+			//localStorage.record_route_num = 0;
+			for (var i = 0; i < num; i++) {
+				
+					
+				var jstr=localStorage.getItem("recordroute" + i);
+				console.log(jstr);
+				var json=JSON.parse(jstr);
+				
+				var start=json.start,end=json.end;
+				
+				
+			
+			//document.querySelector('#record').innerHTML = '';
+			
+			var rec = document.createElement('li'),
+						//spans=[],
+						classes = ['glyphicon glyphicon-search', 'record-item-start', 'glyphicon glyphicon-circle-arrow-right', 'record-item-end'],
+						inners = ['', start, '', end];
+					for (var i = 0; i < 4; i++) {
+						var span = document.createElement('span');
+						span.className = classes[i];
+						span.innerHTML = inners[i];
+						span.style.margin = '10px 5px';
+						rec.appendChild(span);
+					}
+					document.querySelector('#record').insertBefore(rec, document.querySelector('#record').firstChild)
+			}	
+	    }
+	    
+	    showRecords();
+		function showdiv() {
+			//document.querySelector()
+			document.getElementById("bg").style.display = "block";
+			document.getElementById("show").style.display = "block";
+			document.querySelector('#btnclose').addEventListener('click',hidediv,false);
+			document.querySelector('#autoComplete').focus();
+
+		}
+		function accelerateStartVal(){
+
+			document.querySelector('span#start').innerHTML=document.querySelector('#autoComplete').value;
+		}
+		function accelerateEndVal(){
+
+			document.querySelector('span#end').innerHTML=document.querySelector('#autoComplete').value;
+		}
+		function hidediv() {
+			
+			
+			setTimeout(function(){
+				document.querySelector('#btnclose').removeEventListener('click',accelerateStartVal);
+				document.querySelector('#btnclose').removeEventListener('click',accelerateEndVal);
+				document.getElementById("bg").style.display = 'none';
+				document.getElementById("show").style.display = 'none';
+				document.querySelector('#autoComplete').value='';
+			},10)
+		}
+		//document.querySelector('input#start').blur();
+		document.querySelector('span#start').onclick=function(){
+			showdiv();
+
+			document.querySelector('#btnclose').addEventListener('click',accelerateStartVal,false);
+		};
+		document.querySelector('span#end').onclick=function(){
+			showdiv();
+
+			document.querySelector('#btnclose').addEventListener('click',accelerateEndVal,false);
+		};
+		
+		function  searchByRecord(start,end) {
+			var sr = null;
+			if (!sr) {
+				sr = plus.webview.getWebviewById('searchResult');
+//				 sr = plus.webview.create('searchResult.html?start='+start+'end='+end,'searchResult');
+
+// window.open('searchResult.html?start='+start+'end='+end);
+				mui.fire(sr, 'open', {
+				"start": start,
+				"end": end
+			});
+				//
+
+                 //sr = plus.webview.open('searchResult.html','slide-in-bottom');
+			 plus.webview.show(sr,'slide-in-bottom');
+		}
+		}
+		
+		function transToAddress(){
+			var add=localStorage.getItem('userLocation');
+			//alert(add);
+			return add;
+			
+		}
+		/*document.querySelector('.record-item').onclick=function  () {
+			var start=this.querySelector('.record-item-start').innerHTML,
+			    end=this.querySelector('.record-item-end').innerHTML;
+			    alert(start+end);
+			    searchByRecord(start,end);
+		}	*/
+	</script>
+	<script type="text/javascript">
+		var map;
+		window.addEventListener('plusready', function() {
+			map = new plus.maps.Map('map');
+		});
+
+		//alert(localStorage.getItem('userLocation'));
+		var ac = new BMap.Autocomplete({
+			"input": "autoComplete"
+		});
+		ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+			var _value = e.item.value;
+			var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+
+		});
+		var change = document.querySelector('.transfer');
+		change.onclick = function() {
+			var start = document.querySelector('.start').querySelector('span').innerHTML;
+			var end = document.querySelector('.end').querySelector('span').innerHTML;
+			document.querySelector('.start').querySelector('span').innerHTML = end;
+			document.querySelector('.end').querySelector('span').innerHTML = start;
+		}
+		document.querySelector('.record-clear').addEventListener('click', clearRecord, false);
+		
+		function check () {
+			
+		}
+		 
+		//document.querySelector('.record-clear').onclick=clearRecord;
+		function notRepeat(start, end) {
+
+			var jsonstr = '{start:' + start + ',end:' + end + '}';
+
+			for (var i = 0; i < localStorage.length; i++) {
+				var getKey = localStorage.key(i);
+				var Val = localStorage.getItem(getKey);
+				if (Val == jsonstr) return false;
+			}
+			return true;
+		}
+
+		function clearRecord() {
+			var index = parseInt(localStorage.record_route_num);
+			//localStorage.record_route_num = 0;
+			for (var i = 0; i < index; i++) {
+				localStorage.removeItem("recordroute" + i);
+			}
+			document.querySelector('#record').innerHTML = '';
+		}
+		mui('.search').on('click', 'span', function(e) {
+			//var id = this.getAttribute('id');
+			//获得详情页面
+			//alert("mui");
+			var start = document.querySelector('.start').querySelector('span').innerHTML;
+			var end = document.querySelector('.end').querySelector('span').innerHTML;
+			if(start=='我的位置') {
+				//alert(start)
+				start=transToAddress();
+			   // alert(start);
+			}
+			if(end=='我的位置') {
+				//alert(end)
+				end=transToAddress();
+			    //alert(end);
+			}
+			/*localStorage.setItem("searchRouteStart",start);
+			localStorage.setItem("searchRouteEnd",end);*/
+			//alert(start+'\n'+end);
+			var sr = null;
+			if (!sr) {
+				sr = plus.webview.getWebviewById('searchResult');
+//				 sr = plus.webview.create('searchResult.html?start='+start+'end='+end,'searchResult');
+
+// window.open('searchResult.html?start='+start+'end='+end);
+				mui.fire(sr, 'open', {
+				"start": start,
+				"end": end
+			});
+				//
+
+                 //sr = plus.webview.open('searchResult.html','slide-in-bottom');
+			 plus.webview.show(sr,'slide-in-bottom');
+			
+			}
+			
+			//打开详情页面          
+			/*mui.openWindow({
+				id: 'searchResult'
+			});*/
+			setTimeout(function() {
+				//alert(notRepeat(start,end));
+				if (window.localStorage && start != '' && end != '' && notRepeat(start, end)) {
+					//	alert(localStorage.record_route_num);
+					var index = parseInt(localStorage.record_route_num);
+					//alert(localStorage.record_route_num);
+					//localStorage["recordroute" + index] = '{start:'+ start+',end'+end+'}';
+					localStorage.setItem("recordroute" + index, '{start:' + start + ',end:' + end + '}');
+					localStorage.record_route_num = index + 1;
+					/*
+					 * 检测
+					 */
+					/*for(var i=0;i<localStorage.length;i++){
+					 var getKey=localStorage.key(i);  
+
+                     var Val=localStorage.getItem(getKey);
+                     
+                      alert(Val+'\n'+jsonstr);
+                     }*/
+					/**
+					 * 添加dom
+					 */
+					var rec = document.createElement('li'),
+						//spans=[],
+						classes = ['glyphicon glyphicon-search', 'record-item-start', 'glyphicon glyphicon-circle-arrow-right', 'record-item-end'],
+						inners = ['', start, '', end];
+					for (var i = 0; i < 4; i++) {
+						var span = document.createElement('span');
+						span.className = classes[i];
+						span.innerHTML = inners[i];
+						span.style.margin = '10px 5px';
+						rec.appendChild(span);
+					}
+					document.querySelector('#record').insertBefore(rec, document.querySelector('#record').firstChild)
+				}
+				//绑定点击事件
+				rec.onclick=function  () {
+			var start=this.querySelector('.record-item-start').innerHTML,
+			    end=this.querySelector('.record-item-end').innerHTML;
+			   // alert(start+end);
+			    searchByRecord(start,end);
+		}	
+			}, 200);
+			//sr.show('pop-in', 200);
+		});
+		//存入localstorage
+		document.querySelector('.iback').onclick = function() {
+				//alert("back");
+				plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+			}
+			/*	document.querySelector('.search').onclick = function() {
+			alert("ss");
+			var start = document.querySelector('.start').querySelector('input').value;
+  var end = document.querySelector('.end').querySelector('input').value;
+			//var driving = new BMap.DrivingRoute("地球", {renderOptions: { panel: "panel", autoViewport: true}});
+	//driving.search(start, end);
+	var routePolicy = [BMAP_DRIVING_POLICY_LEAST_TIME,BMAP_DRIVING_POLICY_LEAST_DISTANCE,BMAP_DRIVING_POLICY_AVOID_HIGHWAYS];
+	 var options = {
+        onSearchComplete: function(results){
+            if (driving.getStatus() == BMAP_STATUS_SUCCESS){
+                // 获取第一条方案
+                var plan = results.getPlan(0);
+                // 获取方案的驾车线路
+                var route = plan.getRoute(0);
+                // 获取每个关键步骤,并输出到页面
+                var s = [];
+                for(var j = 0;j < plan.getNumRoutes(); j++){
+                    var route = plan.getRoute(j);
+                    for (var i = 0; i < route.getNumSteps(); i++){
+                        var step = route.getStep(i);
+                        s.push((i + 1) + ". " + step.getDescription());
+                    }
+                }
+                document.getElementById("panel").innerHTML = s.join("<br/>");
+            }
+        },
+        policy:routePolicy[2]
+    };
+    var driving = new BMap.DrivingRoute("地球", options);
+    driving.search("天安门", "百度大厦");
+	//driving.search(start, end);
+		}
+	*/
+	</script>
+
+</html>

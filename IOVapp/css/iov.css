@@ -1,0 +1,176 @@
+.resetfloat:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+.wrapper {
+	background: #D35400;
+	text-align: center;
+	position: relative;
+	top: 0px;
+}
+
+.logo {
+	border-radius: 50%;
+	width: 66px;
+	height: 66px;
+	background: #F39C12;
+}
+
+.PositionTop h2 {
+	color: #2F4F4F;
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	margin-bottom: 0;
+}
+
+input[type="text"] {
+	width: 223px;
+	height: 18px;
+	background: #bdc3c7;
+	padding: 9px;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 10px;
+}
+
+input[type="text"]:focus {
+	border: 2px solid #1abc9d
+}
+
+input[type="password"] {
+	width: 223px;
+	height: 18px;
+	background: #bdc3c7;
+	padding: 9px;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 10px;
+}
+
+input[type="password"]:focus {
+	border: 2px solid #1abc9d
+}
+
+
+/*input[type="submit"] {
+	display: block;
+	background: #38B0DE;
+	width: 124px;
+	height: 40px;
+	padding: 0px;
+	cursor: pointer;
+	color: #fff;
+	border: 0px;
+	margin: 0 auto;
+	border-radius: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 18px;
+	transition: all 0.3s ease;
+	box-shadow: -2px -2px 2px #2980B9 inset;
+}
+
+input[type="submit"]:hover {
+	background: #09cca6
+}*/
+
+.loginBtn {
+	float: left;
+	display: block;
+	background: #38B0DE;
+	width: 124px;
+	padding: 10px 0;
+	/*cursor: pointer;*/
+	color: #fff;
+	border: 0px;
+	margin: 0 auto;
+	border-radius: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 18px;
+	transition: all 0.3s ease;
+	box-shadow: -2px -2px 2px #2980B9 inset;
+	text-decoration: none;
+}
+
+.loginBtn:hover {
+	background: #09cca6;
+}
+
+.loginBtn:active {
+	background: #09cca6;
+}
+
+.Login {
+	padding: 0 38px;
+	
+}
+
+a.register {
+	color: #38B0DE;
+	position: relative;
+	top: 8px;
+	left: 18px;
+}
+
+.link ._remember {
+	color: #2F4F4F;
+	Helvetica Neue", Helvetica, Arial, sans-serif;
+ font-weight: normal
+}
+
+.link a {
+	color: #FF3366;
+	text-decoration: none;
+}
+
+.link a:hover {
+	color: #ff7f24;
+	text-decoration: underline;
+}
+
+.logo-layout {
+	position: absolute;
+	margin-top: 15%;
+	z-index: 2;
+}
+
+.login-layout {
+	position: relative;
+	margin-top: -50px;
+	width: 320px;
+	height: 360px;
+	background: #FFF;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 10px;
+}
+
+.center {
+	position: relative;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.PositionTop {
+	position: relative;
+	text-align: center;
+	top: 4em;
+}
+
+.PositionMid {
+	position: relative;
+	text-align: center;
+	top: 5em;
+	margin-top: 1em
+}
+
+.link {
+	position: relative;
+	text-align: center;
+	top: 7em;
+	padding: 0 35px;
+}

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+			<link rel="stylesheet" href="css/iconfont.css">
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<script type="text/javascript" src="js/mui.js"></script>
+		<script src="js/xhr.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.resetfloat:after {
+				content: '';
+				display: block;
+				clear: both;
+			}
+			
+			body,
+			p {
+				margin: 0;
+				color: black;
+			}
+			
+			#banner {
+				text-align: center;
+				margin: 0 auto;
+				height: 40px;
+				//background-color: #f39c12;
+				background-color: dodgerblue;
+				box-shadow: 0px 3px 3px #B7B7B7;
+				-webkit-box-shadow: 10px 10px 10px black;
+				box-shadow: 10px 10px 5px #888888;
+				opacity: 0.6;
+				/*z-index:;*/
+				position: relative;
+				//position: fixed;
+				z-index: 10;
+			}
+			
+			.userImg {
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				background: url(./img/ceshi.jpg) no-repeat center top;
+				background-size: 45px;
+			}
+			
+			#login {
+				float: left;
+				border-radius: 50%;
+			}
+			/*.userImg p {
+				margin: 0;
+				padding-top: 40px;
+			}*/
+			
+			#banner p {
+				padding: 8px 35px;
+				color: black;
+			}
+			
+			#bottomMenu {
+				position: absolute;
+				bottom: 0;
+				background: #f39c12;
+				width: 100%;
+				height: 40px;
+				padding: 8px 0px 0px 8px;
+			}
+			
+			.menuButton {
+				text-align: center;
+				line-height: 30px;
+				display: inline-block;
+				margin: 0;
+				background: #ffcf4f;
+				border: solid 1px #ffcf4f;
+				border-radius: 3px;
+				width: 29vw;
+				height: 30px;
+			}
+			
+			.mui-tab-item:focus {
+				color: orange;
+			}
+			
+			.mui-icon.iconfont {
+				color: dodgerblue;
+				//color:orange;
+			}
+			
+			.icon-musichall {
+				color: white;
+				//margin-right: 0px;
+				//float:right;
+				position: absolute;
+				right: 5px;
+				bottom: 3px;
+				font-size: 30px;
+			}
+		</style>
+	
+		<!--<link rel="stylesheet" type="text/css" href="css/iconfont_barcode.css"/>-->
+		<!--<link rel="stylesheet" type="text/css" href="css/iconfont_maintain.css"/>-->
+		
+		<script src="js/init.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				preloadPages: [{
+					url: '/route.html',
+					id: 'route.html',
+					styles: {}, //窗口参数  
+					extras: {} //自定义扩展参数
+				}]
+			});
+
+			var em = null,
+				map = null;
+			var points = [];
+			var carArr=[];
+			document.addEventListener("DOMContentLoaded", function() {
+				em = document.getElementById("map");
+			}, false);
+			mui.plusReady(function() {
+				//				plus.navigator.setStatusBarBackground("#72B6FB");
+				//plus.navigator.setStatusBarBackground("#ccc");
+				if(!em || map) {
+					return
+				};
+				map = new plus.maps.Map("map");
+				navigator.geolocation.getCurrentPosition(userLocation);
+				map.getUserLocation(showGasStation);
+				//画出走过路线
+				
+				//获取cars
+				
+				function getCarsSuc(resText) {
+					
+					carArr = resText.data;
+					//alert(carArr);
+				}
+                function requestCar () {
+                    var username = plus.storage.getItem("username");
+                    console.log("username:"+username);
+                   // console.log(plus.storage.getItem("xxx")==null);
+                    if(username!=""&&username!=null){
+                    	var postUrl = plus.storage.getItem("serverUrl") + "GetCarsServlet" + "?username=" + username;
+				
+				//alert("ready");
+				xhr(postUrl, true, getCarsSuc, function() {
+					plus.nativeUI.toast('服务器无法联系，请检查网络链接是否正常！');
+				}); 
+                    }
+				
+					
+                }
+				
+				//requestCar();
+				plus.geolocation.watchPosition(function(p) {
+					points.push(new plus.maps.Point(p.coords.latitude, p.coords.longitude));
+					var polylineObj = new plus.maps.Polyline(points);
+					polylineObj.setLineWidth(100);
+					map.addOverlay(polylineObj);
+					var str = "";
+					for(var i in points) {
+						str += points[i].getLng() + " " + points[i].getLat() + ",";
+					}
+					//console.log(str);
+				}, function(e) {
+					alert("Geolocation error: " + e.message);
+				});
+				var old_back = mui.back;
+				mui.back = function() {
+					mui.fire(plus.webview.currentWebview().opener(), 'back', {});
+					old_back();
+				};
+				var first = null;
+				plus.key.addEventListener('backbutton', function() {
+					mui.back();
+					//首次按键，提示‘再按一次退出应用’
+					/*if(!first){
+					    first = new Date().getTime();
+					    mui.toast('再按一次退出应用');
+					    setTimeout(function(){
+					        first = null;
+					    },1000);
+					}else{
+					    if(new Date().getTime()-first<1000){
+					        plus.runtime.quit();
+					    }
+					}*/
+				}, false);
+
+				//菜单
+				var music = document.getElementById('music');
+				var order = document.getElementById('order');
+				var route = document.getElementById('route');
+				var inform = document.getElementById('inform');
+				var maintain = document.getElementById('maintain');
+				music.addEventListener('tap', function() {
+					//plus.webview.openWindow({url:"music.html",id:"music.html"})
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					mui.openWindow({
+						url: "music.html",
+						id: "music.html",
+						show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'slide-in-left', //页面显示动画，默认为”slide-in-right“；
+								duration: 500 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+						
+						
+					})
+				}, false);
+				order.addEventListener('tap', function() {
+					///alert("order");
+					//plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					plus.nativeUI.toast("请选择地图中的加油站，然后点击气泡");
+				}, false);
+
+				route.addEventListener('tap', function() {
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					//plus.webview.openWindow({url:"route.html",id:"route.html"})
+					mui.openWindow({
+						url: "route.html",
+						id: "route.html"
+					})
+				}, false);
+
+				inform.addEventListener('tap', function() {
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					//plus.webview.openWindow({url:"route.html",id:"route.html"})
+					mui.openWindow({
+						url: "inform.html",
+						id: "inform.html",
+						
+							show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'fade-in', //页面显示动画，默认为”slide-in-right“；
+								duration: 500 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+					})
+
+					setTimeout(function() {
+						var icon = document.querySelector('.icon-xiaoxi');
+						icon.innerHTML = "";
+					}, 1000);
+				}, false);
+
+				maintain.addEventListener('tap', function() {
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					//plus.webview.openWindow({url:"route.html",id:"route.html"})
+					mui.openWindow({
+						extras: { 
+								
+								
+								cars:carArr
+							},
+						url: "maintain.html",
+						id: "maintain.html",
+						show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'zoom-fade-out', //页面显示动画，默认为”slide-in-right“；
+								duration: 500 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+					})
+				}, false);
+
+				function createMarker(json) {
+					//map.centerAndZoom( new plus.maps.Point(116.347292, 39.968716), 12 );
+					var marker = new plus.maps.Marker(new plus.maps.Point(parseFloat(json.lon), parseFloat(json.lat)));
+					//marker.setIcon("img/gasstation.png");
+					marker.setLabel(json.name);
+					var gastprice = json.gastprice;
+					var priceInfo = "";
+					//alert(gastprice);
+					//console.log(gastprice);
+					for(var key in gastprice) {
+						//console.log(gastprice[i].name);
+						//alert(gastprice[i]);
+						priceInfo += key + ":" + gastprice[key] + '\n';
+					}
+					var bubble = new plus.maps.Bubble(json.name + '\n' + json.address + '\n' + "油价(元/升):" + '\n' + priceInfo + "距离" + json.distance + "米");
+					marker.setBubble(bubble);
+					//点气泡跳转
+					bubble.onclick = function(bubble) {
+						setTimeout(function() {
+							plus.navigator.setStatusBarBackground('#E4EBFB');
+						}, 900);
+						mui.openWindow({
+							url: '/gasOrder.html',
+							id: 'gasOrder.html',
+							extras: { //加油详情页
+								
+								gasStation: json,
+								cars:carArr
+							},
+							show: {
+								autoShow: true, //页面loaded事件发生后自动显示，默认为true
+								aniShow: 'slide-in-bottom', //页面显示动画，默认为”slide-in-right“；
+								duration: 800 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+							}
+						});
+
+					}
+					map.addOverlay(marker);
+				}
+
+				function userLocation() {
+					map.showUserLocation(true);
+					map.getUserLocation(function(state, pos) {
+						if(0 == state) {
+							//map.setCenter(pos);
+							map.centerAndZoom(pos, 13);
+							//console.log( "Current Position:" + pos.getLng() + "," + pos.getLat() );
+						}
+					});
+				}
+
+				function showGasStation(state, pos) {
+					if(0 == state) {
+						var request = new XMLHttpRequest();
+						request.open("POST", "http://apis.juhe.cn/oil/local?key=6dbe9e2e4fccd90ad46eadeb3c83f35c&r=5000&lon=" + pos.getLng() + "&lat=" + pos.getLat());
+						//request.open("POST", "http://apis.juhe.cn/oil/local?key=6f5e688b42be8a97594cdebc9f139131&r=10000&lon=" + 32.20717820246398 + "&lat=" + 118.7154288773552);
+						request.send();
+						request.onreadystatechange = function() {
+							if(request.readyState == 4) {
+								if(request.status == 200) {
+									console.log(request.responseText);
+									var res = JSON.parse(request.responseText);
+									var ress = res.result;
+									var datas = ress.data;
+									for(var i in datas) {
+										createMarker(datas[i]);
+									}
+								} else {
+									alert("发生错误" + request.status);
+								}
+							}
+						}
+					}
+				}
+
+				//获取cars
+
+				//菜单
+			});
+			//打开的加油站详情页
+			//			function view(){
+			//				var jsonStr = "{";
+			//jsonStr+='"name":'+'"'+json.name+'",'+'"areaname":'+'"'+json.areaname+'",'+'"address":'+'"'+json.address+'",'+'"discount":'+'"'+json.discount+'",'+'"gastprice":'+'"'+json.gastprice+'",'+'"fwlsmc":'+'"'+json.fwlsmc+'",'+'"distance":'+'"'+json.distance+'"}';
+			//				var w = window.open(encodeURI("choose.html" + '?' + jsonStr));
+			//
+			//			}
+		</script>
+		<style type="text/css">
+			#map {
+				width: 100%;
+				position: fixed;
+				top: 40px;
+				bottom: 50px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="banner" class="resetfloat">
+			<!--<div id="login.html" class="userImg" onclick="clicked(this.id);" style="float: left;border-radius: 50%;"></div>-->
+			<div id="login" class="userImg"></div>
+			<p>车联网</p>
+			<span class="mui-icon iconfont icon-musichall" id='music' style="color:white;"></span>
+		</div>
+
+		<!--<div id='bottomMenu'>
+			<div class='menuButton' id="order"><span>加油</span></div>
+			<div class='menuButton' id="route"><span>路线</span></div>
+        	<div  class='menuButton' id="music"><span>音乐</span></div>
+       
+        </div>-->
+		<nav class="mui-bar mui-bar-tab" style="background: #eee; border-top:1px solid gainsboro; height: 50px;">
+
+			<a id="order" class="mui-tab-item ">
+				<span class="mui-icon iconfont icon-jiayouzhan"></span>
+				<span class="mui-tab-label">加油</span>
+			</a>
+			<a class="mui-tab-item " id="route">
+				<span class="mui-icon iconfont icon-luxian"></span>
+				<span class="mui-tab-label">路线</span>
+			</a>
+			<a class="mui-tab-item" id="maintain">
+				<span class="mui-icon iconfont icon-saoma"></span>
+				<span class="mui-tab-label">维护</span>
+			</a>
+			<a class="mui-tab-item" id="inform" href='inform.html'>
+
+				<span class="mui-icon iconfont icon-xiaoxi"></span>
+
+				<span class="mui-tab-label">通知</span>
+			</a>
+			<!--<a class="mui-tab-item" id="music">
+				<span class="mui-icon iconfont icon-music"></span>
+				<span class="mui-tab-label">音乐</span>
+			</a>-->
+
+		</nav>
+
+		<div id="map">地图加载中...</div>
+
+		<script>
+			//tap为mui封装的单击事件，可参考手势事件章节
+			document.querySelector("#login").addEventListener("tap", function() {
+
+				console.log(plus.storage.getItem("username"));
+
+				if(plus.storage.getItem("username") == null || plus.storage.getItem("username") == "") { //null   or  ""
+					plus.navigator.setStatusBarBackground("rgba(249, 94, 21, 0))");
+					mui.openWindow({
+						url: '/login.html',
+						id: 'login.html',
+						show: {
+							autoShow: true
+						}
+					})
+				} else {
+					mui.openWindow({
+						url: "individual.html",
+						id: "individual.html"
+					})
+				}
+
+			});
+		</script>
+		<script>
+			function setBadgeNum(num) {
+				//alert("setnum");
+				//var badge=document.querySelector("span.mui-badge");
+				//badge.innerHTML=num;
+
+				var icon = document.querySelector('.icon-xiaoxi');
+				icon.innerHTML = '<span class="mui-badge" style="font-size: 10px;">' + num + '</span>';
+			}
+
+			//var wv=plus.webview.currentWebview();
+			//wv.setBadgeNum(4);
+		</script>
+
+	</body>
+
+</html>

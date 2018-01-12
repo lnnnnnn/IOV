@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/header.css"/>
+		<script type="text/javascript" src="js/mui.min.js"></script>
+<!--<script src="js/init.js" type="text/javascript" charset="utf-8"></script>-->
+
+<!--<script src="js/myxhr.js" type="text/javascript" charset="utf-8"></script>-->
+		<style>
+			input {
+				width: 55vw;
+				height: 12px;
+				padding: 2vw;
+				text-align: center;
+				font-size: 13px;
+				border-radius: 10px;
+			}
+			
+			input:focus {
+				border: 2px solid #1abc9d
+			}
+			
+			dl {
+				margin: 7vh auto ;
+			}
+			
+			dt,
+			dd {
+				display: inline-block;
+				margin-left: 0vw;
+			}
+			
+			dt {
+				width: 28%;
+				
+			}
+			
+			dd {
+				width: 55%;
+				
+			}
+			
+			dt span {
+				text-align: right;
+				/*color: #1abc9d;*/
+			}
+			
+			#register {
+				text-align: center;
+				margin: 0 auto 0 -3vw;
+			}
+			
+			.Rbtn {
+				text-decoration: none;
+				border: solid #1abc9d 1px;
+				padding: 6px 10px;
+				border-radius: 15px;
+				color: white;
+				/*background: rgb(255, 190, 88);*/
+				background: #38B0DE;
+				padding:5px 40px;
+			}
+			.head {
+    //color: #A6A6AB;
+    height: 30px;}
+			
+		</style>
+		
+	</head>
+
+	<body style="background: #F0F0F0";>
+		
+		<div class='head'>用户注册
+			<div class='nvbt iback' style="margin-top:2px;"></div>
+		</div>
+		<!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+		<div id="register">
+
+			<dl>
+				<dt><span>用户名:</span></dt>
+				<dd><input type="text" placeholder="用户名" /></dd>
+			</dl>
+			<dl>
+				<dt><span>登陆密码:</span></dt>
+				<dd><input id="passW" type="password" placeholder="至少六位" /></dd>
+			</dl>
+			<dl>
+				<dt><span>重复密码:</span></dt>
+				<dd><input id="RpassW" type="password" placeholder="重复密码" /></dd>
+			</dl>
+			<dl>
+				<dt><span>邮箱:</span></dt>
+				<dd><input type="text" placeholder="邮箱" /></dd>
+			</dl>
+			
+			<a href="javascript:void(0)" class="Rbtn" id="vehicle_register">提交</a>
+		</div>
+		<script src="js/back_close.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+	<script>
+	   var formVal=[];
+		var N = document.getElementsByTagName("input").length;
+		var passwordIsTrue = function() {
+			var passW = document.getElementById("passW").value;
+			var RpassW = document.getElementById("RpassW").value;
+			if (passW == RpassW) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		var isEmpty = function() {
+			var input = [];
+			for (var i = 0; i < N; i++) {
+				input[i] = document.querySelectorAll("input")[i].value;
+				formVal[i]=input[i];
+			}
+			for (var i = 0; i < N; i++) {
+				if (input[i] == '') {
+					return false;
+					break;
+				} else {
+					if (i >= N - 1) {
+						return true;
+						break;
+					}
+					continue;
+				}
+			}
+		}
+
+		function checkLength() {
+			var password = document.getElementById("passW"); //获取密码框值
+			if (password.value.length < 6) {
+				//				alert("密码长度至少六位！");
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function checkID(arg) {
+			var check = /^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/;
+			var res = check.test(arg);
+			return res;
+		}
+		
+		function registerSucCallback (data) {
+			 alert("data");
+			 
+		}
+		
+		function myxhr(param,servlet) {
+					
+					//var data = "data=" + jsonStr;
+					var wd = plus.nativeUI.showWaiting();	// 显示一个等待的对话框  
+					var postUrl = plus.storage.getItem("serverUrl") + servlet+"?"+param;
+					console.log(postUrl);
+					var request = new plus.net.XMLHttpRequest();
+					//XMLHttpRequest();
+					request.open("POST", postUrl);
+					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					request.send();
+					request.onreadystatechange = function() {
+						if (request.readyState == 4) {
+							if (request.status == 200) {
+								wd.close(); // 调用成功，先关闭等待的对话框  
+								plus.ui.alert(request.responseText,null,"",'确定');
+								//alert(request.responseText);
+								//plus.ui.alert(request.responseText,null,"",'确定');
+							} else {
+								alert("query" + "发生错误" + request.status);
+							}
+						}
+					}
+				}
+		window.onload = function() {
+			var Subm = document.querySelector("#vehicle_register");
+			Subm.addEventListener("tap", function() {
+				if (isEmpty()) {
+					if (checkLength()) {
+						if (passwordIsTrue()) {
+							//						clicked(this.id);
+							var data="username="+formVal[0]+"&password="+formVal[1]+"&email="+formVal[3];
+				console.log(data);
+				
+				myxhr(data,"RegisterUserServlet");
+						} else {
+							alert("两次输入密码不一致");
+						}
+					} else {
+						alert("密码长度至少六位！");
+					}
+				} else {
+					alert("输入不能为空");
+				}
+				//				alert(passwordIsTrue());
+				
+				//console.log(plus.storage.getItem("serverUrl"));
+				///var serverUrl=plus.storage.getItem("serverUrl")+"RegisterUserServlet";
+			   // console.log(serverUrl);
+				//var doms = document.querySelectorAll("input")
+				
+				/*xhr(
+      				serverUrl, 
+      				data, 
+      				false, 
+      				registerSucCallback, 
+      				function(){
+						//document.getElementById("mask").style.display = "none";
+						mui.toast('服务器无法联系，请检查网络链接是否正常！');
+					}
+      		);*/
+			})
+		}
+			
+			
+	</script>
+	<script src="js/back_white.js"></script>
+</html>

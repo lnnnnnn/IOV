@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/header.css"/>
+		<style>
+			input[type="text"] {
+				//width: 55vw;
+				height: 12px;
+				padding: 2vw;
+				text-align: center;
+				font-size: 13px;
+				border-radius: 10px;
+			}
+			
+			input[type="text"]:focus {
+				border: 2px solid #1abc9d
+			}
+			
+			dl {
+				margin: 7vh auto;
+			}
+			
+			dt,
+			dd {
+				display: inline-block;
+				margin-left: 0vw;
+			}
+			
+			dt {
+				width: 28%;
+			}
+			
+			dd {
+				width: 55%;
+			}
+			
+			dt span {
+				text-align: right;
+				/*color: #1abc9d;*/
+			}
+			
+			#register {
+				text-align: center;
+				margin: 0 auto;
+			}
+			
+			.Rbtn {
+				text-decoration: none;
+				border: solid #1abc9d 1px;
+				padding: 6px 10px;
+				border-radius: 15px;
+				color: white;
+				/*background: rgb(255, 190, 88);*/
+				background: #38B0DE;
+			}
+			
+			.veh_info {
+				margin-top: 50px;
+				text-align: center;
+			}
+			.nvbt{
+				bottom:12px;
+			}
+			.head{
+				height:30px;
+			}
+		</style>
+		
+
+		<script type="text/javascript" src="js/mui.min.js"></script>
+	</head>
+
+	<body style="background: #F0F0F0";>
+		
+		<div class='head'>
+			<p>添加汽车</p>
+			<div class='nvbt iback'></div>
+		</div>
+		<div id="register">
+
+			<dl>
+				<dt><span>汽车品牌:</span></dt>
+				<dd><input id="v" type="text" placeholder="汽车品牌" value="" /></dd>
+			</dl>
+			
+			<dl>
+				<dt><span>车辆型号:</span></dt>
+				<dd><input type="text" placeholder="车辆型号" /></dd>
+			</dl>
+			<dl>
+				<dt><span>车牌号:</span></dt>
+				<dd><input type="text" placeholder="车牌号" /></dd>
+			</dl>
+			
+			
+			
+			<dl>
+				<dt><span>车架号:</span></dt>
+				<dd><input type="text" placeholder="车架号" /></dd>
+			</dl>
+			<dl>
+				<dt><span>发动机号:</span></dt>
+				<dd><input type="text" placeholder="发动机号" /></dd>
+			</dl>
+			<a  class="Rbtn" id="addVeh">添加车辆</a>
+			<!--<a href="javascript:void(0)" class="Rbtn" style="padding: 6px 25px;">保存</a>-->
+		</div>
+		<div class="veh_info">
+
+		</div>
+		
+         <script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+   <!--<script src="js/myxhr.js" type="text/javascript" charset="utf-8"></script>-->
+	<script type="text/javascript">
+	
+	document.querySelector('.iback').onclick = function() {
+//alert("back");
+//plus.navigator.setStatusBarBackground("#72B6FB");
+	plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+}
+		var N = document.getElementsByTagName("input").length;
+		
+		var input = [];
+		var isEmpty = function() {
+			
+			for (var i = 0; i < N; i++) {
+				input[i] = document.querySelectorAll("input")[i].value;
+			}
+			for(var i =0;i<N;i++){
+				if(input[i] == ''){
+					return false;
+					break;
+				}else{
+					if(i>=N-1){
+						return true;
+						break;
+					}
+					continue;
+				}
+			}
+		}
+		var SaveVeh = function() {
+			var input = [];
+			for (var i = 0; i < N; i++) {
+				input[i] = document.querySelectorAll("input")[i].value;
+			}
+			var select = document.getElementById('mySelect').value;
+			//				alert(input[0]);
+			var p = document.createElement("p");
+			p.innerHTML = "汽车品牌:" + input[0] + " 车辆类型:" + select + " 车辆型号:" + input[1] + " 车牌号:" + input[2]+ " 车架号:" + input[3]+ " 发动机号:" + input[4];
+			document.querySelector(".veh_info").appendChild(p);
+			for (var i = 0; i < N; i++) {
+				document.querySelectorAll("input")[i].value = "";
+			}
+		}
+		
+		function myxhr(param,servlet) {
+					
+					//var data = "data=" + jsonStr;
+					var wd = plus.nativeUI.showWaiting();	// 显示一个等待的对话框  
+					var postUrl = plus.storage.getItem("serverUrl") + servlet+"?"+param;
+					console.log(postUrl);
+					var request = new plus.net.XMLHttpRequest();
+					//XMLHttpRequest();
+					request.open("POST", postUrl);
+					request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					request.send();
+					request.onreadystatechange = function() {
+						if (request.readyState == 4) {
+							if (request.status == 200) {
+								wd.close(); // 调用成功，先关闭等待的对话框  
+								
+								//alert("添加成功！");
+								plus.ui.alert( "添加成功", null, '添加车辆', '确定' );
+
+							} else {
+								alert("query" + "发生错误" + request.status);
+							}
+						}
+					}
+				}
+		window.onload = function() {
+			document.getElementById("addVeh").addEventListener("tap", function() {
+				//alert("in");
+				if (isEmpty()) {
+					
+					var username=plus.storage.getItem("username");
+					
+					
+					var symbol;
+					switch (input[0]){
+						case "奥迪":
+						symbol="img/flag/flag_aodi.png";
+						break;
+						case "宝马":
+						symbol="img/flag/flag_baoma.png";
+						break;
+						case "大众":
+						symbol="img/flag/flag_dazhong.png";
+						break;
+					}
+					console.log("symbol:"+symbol);
+					var param="username="+username+"&brand="+input[0]+"&type="+input[1]+"&hphm="+input[2]+"&classno="+input[3]+"&engineno="+input[4]+"&symbol="+symbol;
+					myxhr(param,"RegisterCarServlet");
+				} else {
+					alert("不能为空！");
+				}
+				
+				
+			});
+		}
+	</script>
+	</body>
+</html>

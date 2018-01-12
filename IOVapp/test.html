@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				//z-index:-3;
+			}
+			/*.container{
+				position: relative;
+				//z-index: 100;
+			}*/
+			#cnter {
+				height:300px;
+    width: 560px;
+    background-color: #F8FAFF;
+    margin: auto;
+    position: relative;
+    font-family: 'Microsoft Yahei';
+   // z-index: 200;
+}
+			#cnter::before,#cnter::after {
+				content: "";
+				position: absolute;
+				z-index: -1;
+				bottom: 20px;
+				top: 3px;
+				left: 30px;
+				width: 10px;
+				height: 200px;
+				box-shadow: -20px 4px 20px #222;
+				transform: rotate(-6deg);
+			}
+			#cnter::after {
+				box-shadow: 20px 4px 20px #222;
+				right: 30px;
+				left: auto;
+				transform: rotate(6deg);
+			}
+		</style>
+	</head>
+	<body>
+		<!--<div class='container'>-->
+			
+		
+		<div id="cnter">
+						
+					</div>
+					
+					<!--</div>-->
+	</body>
+</html>

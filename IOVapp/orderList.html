@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <script src="js/jsonForTest2.js" ></script>
+    <script src="js/pay.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/xhr.js" type="text/javascript" charset="utf-8"></script>
+    <link href="css/header.css" rel="stylesheet"/>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <style>
+		.tabBar{
+			display:inline-block;
+			color:#2F4F4F;
+			padding:3px 0;
+			
+			width:50%;
+			text-align: center;
+			margin:0 -3px;
+		}
+		.tabBar:active{
+			color:white;
+			background-color:#5BC0DE;
+		}
+		#tabBarContent{
+			padding-left:6px;
+		}
+		.mui-control-content.active{
+			display: block;
+		}
+		.tabBar.active{
+			color:white;
+			background-color:#5BC0DE;
+		}
+		#itemUnpayed ul li p{
+			color:#222;
+		}
+		
+		.payBtn{
+			text-align:center;
+			float:right;
+			width:35vw;
+			background:#F0AD4E;
+		}
+		.payBtn:active{
+			background:#FFFF00;
+		}
+		.payed{
+			text-align:center;
+			float:right;
+			width:32vw;
+			background:#EEEEEE;
+		}
+		.barcodeBtn{
+			position:absolute;
+			//top:20px;
+			width:120px;
+			//bottom:10px
+			border:1px solid red;
+		}
+	</style>
+    
+    
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	
+      	mui.plusReady(function(){
+      		askOrders();
+      		function askOrders () {
+      			//plus.storage.setItem("username","zzz");
+	      		var username=plus.storage.getItem("username");
+			         //username="zzx";
+	      			var postUrl = plus.storage.getItem("serverUrl") + "GetAllOrdersServlet"+"?username="+username;
+						console.log(postUrl);
+						//var request = new plus.net.XMLHttpRequest();
+						
+						var request=new XMLHttpRequest();
+						//XMLHttpRequest();
+						request.open("POST", postUrl);
+						request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+						request.send();
+						var wd=plus.nativeUI.showWaiting("");
+						request.onreadystatechange = function() {
+							//alert(request.readyState);
+							if (request.readyState == 4) {
+								wd.close();
+								if (request.status == 200) {
+									//alert("order" + request.responseText);
+									console.log(request.responseText);
+									
+									
+									//base
+									var jsons=(JSON.parse(request.responseText)).data;
+									Json=jsons;
+									showOrders(Json);
+								} else {
+									alert("queryOrders" + "发生错误" + request.status);
+								}
+							}
+						}
+	      	}
+	      	//showOrders(Json);
+			function showOrders(Json) {
+			    var Lenth=Json.length;
+			    var ordersPayed=[];
+			    var ordersUnpayed=[];
+				var n=0,m=0;
+			    for(var i=0;i<Lenth;i++){
+			    	if(Json[i].finished==true){
+			    		ordersPayed[n]=Json[i];
+			    		n++;
+			    	}if(Json[i].finished==false){
+			    		ordersUnpayed[m]=Json[i];
+			    		m++;
+			    	}
+			    };
+			    formListOfOrder(ordersPayed,"itemPayed");
+			    formListOfOrder(ordersUnpayed,"itemUnpayed");
+			    	
+			}    
+			function formListOfOrder(json,ID){
+				var listDiv=document.getElementById(ID);
+				var ul=createNode('ul');
+				ul.className='mui-table-view';
+				createChildNode(listDiv,ul);
+				for(var i in json){
+					var li=createNode('li');
+					li.className='mui-table-view-cell';
+					createChildNode(ul,li);
+					var p1=createNode('p',json[i].gasStation);
+					var p2=createNode('p',json[i].carDesc);
+					var p3=createNode('p',json[i].date)
+					var p4=createNode('p',json[i].type);
+					var p5=createNode('p',json[i].volume);
+					var p6=createNode('p',json[i].money+"元");
+					createChildNode(li,p1);
+					createChildNode(li,p2);
+					createChildNode(li,p3);
+					createChildNode(li,p4);
+					createChildNode(li,p5);
+					createChildNode(li,p6);
+					var a2=createNode('a',"显示二维码");
+					a2.className='barcodeBtn';
+					a2.style.color='#5BC0DE';
+					a2.href="#popover"+i;
+					createChildNode(li,a2);
+					var div=createNode('div');
+					div.className='mui-popover';
+					div.id="popover"+i;
+					createChildNode(document.body,div)
+					var img=createNode('img');
+					img.src=json[i].barcodeSrc;
+					img.style.width="270px";
+					img.style.height="270px";
+					createChildNode(div,img);
+					if(ID==='itemUnpayed'){
+						var a=createNode('a',"支付")
+						a.className="payBtn"
+						createChildNode(li,a);
+						(function(json){a.addEventListener('tap',function(){
+							plus.nativeUI.confirm("确认支付吗？",
+								function(e){
+									if(e.index==0){
+										/*mui.openWindow({
+										url:'payment.html',
+										id:'payment.html',
+										extras:{
+											'id':json.id,
+											'money':json.money
+										}
+									})*/
+									
+									payOrder(json.id,json.money);
+									//console.log(json.id);
+									reviseOrder(json.id);
+								//plus.webview.currentWebview().close();
+								setTimeout(function function_name () {
+								location.reload();
+								},800);
+									
+									}
+								})
+							
+						},false)})(json[i])
+						
+						
+						
+					}//if
+					else{
+						/*var a=createNode('a',"")
+						a.className="payed";
+						createChildNode(li,a);*/
+					}
+				}//for
+			}//formListOfOrder
+			function createNode(element,innerHtml){
+				var node=document.createElement(element);
+				if(innerHtml!==undefined){
+					node.innerHTML=innerHtml;
+				}
+				return node;
+			}
+			function createChildNode(father,child){
+				father.appendChild(child);
+			}
+			window.addEventListener('reload',function(){
+				window.location.reload(true);
+				console.log('reloaded')
+			},false)
+      	})
+      	
+    </script>
+</head>
+<body>
+	<div class='head'>订单
+		<div class='nvbt iback'></div>
+	</div>
+	<div  id='orderContent'>
+		<div id="tabBarContent">
+			<a class="tabBar active" href="#itemUnpayed">未支付</a>
+        	<a class="tabBar" href="#itemPayed">已支付</a>
+		</div>
+        <div id="itemUnpayed" class="mui-control-content active">
+			<!--<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					
+				</li>
+		
+			</ul>-->
+		</div>
+		<div id="itemPayed" class="mui-control-content">
+			<!--
+            <ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					
+				</li>
+			</ul>-->
+		</div>
+	</div>
+		
+		
+	<script>
+		var unpayed=document.getElementById("itemUnpayed");
+		var payed=document.getElementById("itemPayed")
+		
+		var tabBar=document.getElementById("tabBarContent");
+		for(var i=0;i<2;i++){
+			tabBar.children[i].addEventListener('tap',function(){
+				for(var i=0;i<2;i++){
+					tabBar.children[i].className="tabBar";
+				}
+				this.className="tabBar active";
+				if(this.attributes.href.value=="#itemUnpayed"){
+					payed.className="mui-control-content";
+					unpayed.className="mui-control-content active";
+				}
+				if(this.attributes.href.value=="#itemPayed"){
+					unpayed.className="mui-control-content";
+					payed.className="mui-control-content active";
+				}
+			},false)
+		}
+		
+	</script>
+	<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

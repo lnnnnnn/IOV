@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link href="css/iov.css" rel="stylesheet">
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<!--<script type="text/javascript" src="js/init.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="css/header.css" />
+		<style>
+.head p{
+	margin:auto;
+}
+.head {
+    //color: #A6A6AB;
+    height: 30px;}
+		</style>
+	</head>
+
+	<body class="wrapper" style="background: #F0F0F0" ;>
+
+		<div class='head'>
+			<p>登录</p>
+			<div class='nvbt iback' style=""></div>
+		</div>
+		<div class="content" style="margin-top: 10px">
+			<div class="center logo logo-layout">
+				<img src="img/iov.png" width="35px" style="margin-top: 17px" />
+			</div>
+
+			<div class="login-layout">
+
+				<div class="PositionTop">
+					<h2>Internet of Vehicles</h2>
+				</div>
+				<div class="PositionMid">
+					<input id="username" type="text" placeholder="User" />
+				</div>
+				<div class="PositionMid">
+					<input id="userpassword" type="password" placeholder="Passwords" />
+				</div>
+				<div class="PositionMid Login resetfloat">
+					<!--<input class="loginBtn" type="submit" value="LOGIN" />-->
+					<a class="loginBtn" >LOGIN</a>
+					<a class="register" id="register">免费注册</a>
+				</div>
+
+				<!--<div class="link resetfloat">
+					<div id="_remember" style="float: left;">
+						<input type="checkbox" />记住密码
+					</div>
+					<a href="#" style="float: right;">忘记密码？</a>
+				</div>-->
+			</div>
+		</div>
+		<!--<script src="js/myxhr.js"></script>-->
+
+		<script>
+			//tap为mui封装的单击事件，可参考手势事件章节
+			document.getElementById('register').addEventListener("tap", function() {
+				mui.openWindow({
+					url: '/register.html',
+					id: 'register.html',
+					show: {
+						autoShow: true
+					}
+				})
+			});
+			document.querySelector(".loginBtn").onclick = function() {
+					//var username=document.querySelector('#username').value;
+					//plus.storage.setItem("username",username);
+					///alert("tap");
+					var username = document.querySelector('#username').value,
+						pw = document.querySelector("#userpassword").value;
+					var param = "username=" + username + "&password=" + pw;
+					//myxhr(param,"LoginServlet");
+					var wd = plus.nativeUI.showWaiting(); // 显示一个等待的对话框  
+					
+					
+					
+					
+					//var postUrl="http://192.168.1.102:8080/IOVServer/RegisterUserServlet?username=omg&password=111111&email=1";
+					var postUrl = plus.storage.getItem("serverUrl") + "LoginServlet" + "?" + param;
+					console.log(postUrl);
+					try {
+						var request = new plus.net.XMLHttpRequest();
+						//XMLHttpRequest();
+						//request.timeout = 20000;
+						request.open("POST", postUrl);
+						request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					/*	request.ontimeout = function(){
+							alert("timeout");
+	// xhr请求超时事件处理
+};
+						request.onerror = function(){
+							
+							alert("error");
+	// xhr请求出错事件处理
+};*/                   
+						request.onreadystatechange = function() {
+							//alert(request.readyState);
+							if (request.readyState == 4) {
+								wd.close(); // 调用成功，先关闭等待的对话框  
+								if (request.status == 200) {
+									
+									
+									//console.log("a"+request.responseText+"b");
+									if ("Login Success!!" == request.responseText) {
+										plus.ui.alert(request.responseText,null,"",'确定');
+										console.log(username);
+										plus.storage.setItem("username", username);
+										console.log(plus.storage.getItem("username"));
+										
+										//map获取carArr
+										var map=plus.webview.getWebviewById('map.html');
+										map.evalJS('requestCar()');
+									
+									
+								/*	mui.init({
+				preloadPages: [{
+					url: '/maintain.html',
+					id: 'maintain.html',
+					styles: {}, //窗口参数  
+					extras: {} //自定义扩展参数
+				}]
+			});*/
+									//	plus.webview.hide(plus.webview.currentWebview(), "slide-out-right");
+									}else{
+										plus.ui.alert("用户名或密码输入错误！",null,"",'确定');
+									}
+								} else {
+									alert("query" + "发生错误" + request.status);
+								}
+							}
+						}
+						request.send();
+						
+					} catch (e) {
+						console.log(e);
+						if (request != null) {
+							request.abort();
+							request= null;
+						}
+					}
+					
+					
+					
+					}
+		</script>
+		<script src="js/back.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>
